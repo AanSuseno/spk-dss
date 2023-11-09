@@ -18,40 +18,84 @@
             </button>
         </div>
         <!-- ! box btn create project -->
-        <a  href="<?= base_url($dss.'/detail/id') ?>">
-            <div class="callout callout-success">
-                <h5 class="d-flex justify-content-between">
-                    <span>Project name</span>
-                    <button class="btn btn-secondary btn-sm rounded">
-                        <i class="fa fa-archive" title="archive project"></i>
-                    </button>
-                </h5>
-            </div>
-        </a>
+        <!-- loop projects -->
+        <?php foreach ($projects as $key => $p) : ?>
+            <a  href="<?= base_url($dss.'/detail/'.$p['id']) ?>">
+                <div class="callout callout-success">
+                    <h5 class="d-flex justify-content-between">
+                        <span><?= $p['name'] ?></span>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteProject" onclick="deleteProjectModal(<?= $p['id'] ?>)">
+                            <i class="fa fa-times" title="delete project"></i>
+                        </button>
+                    </h5>
+                </div>
+            </a>
+        <?php endforeach ?>
+        <!-- ! loop projects -->
     </div>
     <!-- /.card-body -->
 </div>
 
+<!-- modal create -->
 <div class="modal fade" id="modalCreateProject">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Create Project</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-            <label for="projectName">Project Name</label>
-            <input type="text" class="form-control" id="projectName" placeholder="Name">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="<?= base_url('projects/create/ahp') ?>" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="projectName">Project Name</label>
+                        <input type="text" class="form-control" autocomplete="off" name="name" id="projectName" placeholder="Name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Create</button>
-      </div>
     </div>
-  </div>
 </div>
+<!-- ! modal create -->
+
+<div class="modal fade" id="modalDeleteProject">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="<?= base_url('projects/delete/ahp') ?>" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="projectName">Project Name</label>
+                        <input type="text" class="form-control" autocomplete="off" name="name" id="projectName" placeholder="Name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?= $this->endSection() ?>
+
+<?= $this->section('js') ?>
+<script>
+    $(document).ready(() => {
+        Toast.fire({
+            icon: 'success',
+            title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
+        })
+    })
+</script>
 <?= $this->endSection() ?>

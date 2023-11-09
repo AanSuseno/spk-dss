@@ -19,6 +19,8 @@ $title = (isset($title)) ? $title : 'App';
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url("assets/AdminLTE-3.2.0/") ?>dist/css/adminlte.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 </head>
 <!--
 `body` tag options:

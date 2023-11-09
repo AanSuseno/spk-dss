@@ -12,8 +12,22 @@ class Projects extends BaseController
             'title' => strtoupper($dss),
             'dss' => $dss,
             'page_master' => $dss,
-            'page_sub' => $dss . "-project"
+            'page_sub' => $dss . "-project",
+            'projects' => model('Projects')->where('dss', $dss)->find()
         ];
         return view('dss/project', $data_view);
+    }
+
+    public function create($dss) {
+        $data_insert = [
+            'name' => $this->request->getPost('name'),
+            'dss' => $dss
+        ];
+
+        model('Projects')->insert($data_insert);
+
+        session()->setFlashdata('msg', 'Successfully created a new project.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('projects/'.$dss));
     }
 }
