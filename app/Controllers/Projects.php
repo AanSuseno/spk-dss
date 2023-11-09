@@ -30,4 +30,16 @@ class Projects extends BaseController
         session()->setFlashdata('msg-type', 'success');
         return redirect()->to(base_url('projects/'.$dss));
     }
+
+    public function delete($dss, $id) {
+
+        model('Projects')->where([
+            'id' => $id,
+            'dss' => $dss
+        ])->delete();
+
+        session()->setFlashdata('msg', 'Project deleted successfully.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('projects/'.$dss));
+    }
 }
