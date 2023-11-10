@@ -4,13 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Projects extends Model
+class AhpCriteriaWeight extends Model
 {
-    protected $table            = 'projects';
+    protected $table            = 'ahp_criteria_weights';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = false;
     protected $allowedFields    = [];
 

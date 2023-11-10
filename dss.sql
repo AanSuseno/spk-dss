@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 09, 2023 at 10:33 PM
+-- Generation Time: Nov 10, 2023 at 12:05 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -46,11 +46,55 @@ CREATE TABLE `ahp_criteria_weights` (
   `id` bigint NOT NULL,
   `id_ahp_criteria_x` int NOT NULL,
   `id_ahp_criteria_y` int NOT NULL,
-  `weight` float NOT NULL,
+  `id_projects` int NOT NULL,
+  `value` float NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ahp_criteria_weights_total`
+--
+
+CREATE TABLE `ahp_criteria_weights_total` (
+  `id` int NOT NULL,
+  `id_criteria` int NOT NULL,
+  `value` float NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ahp_random_index`
+--
+
+CREATE TABLE `ahp_random_index` (
+  `id` int NOT NULL,
+  `criteria_count` int NOT NULL,
+  `value` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `ahp_random_index`
+--
+
+INSERT INTO `ahp_random_index` (`id`, `criteria_count`, `value`) VALUES
+(1, 1, 0),
+(2, 2, 0),
+(3, 3, 0.58),
+(4, 4, 0.9),
+(5, 5, 1.12),
+(6, 6, 1.24),
+(7, 7, 1.32),
+(8, 8, 1.41),
+(9, 9, 1.45),
+(10, 10, 1.49);
 
 -- --------------------------------------------------------
 
@@ -84,6 +128,18 @@ ALTER TABLE `ahp_criteria_weights`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ahp_criteria_weights_total`
+--
+ALTER TABLE `ahp_criteria_weights_total`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ahp_random_index`
+--
+ALTER TABLE `ahp_random_index`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
@@ -104,6 +160,18 @@ ALTER TABLE `ahp_criteria`
 --
 ALTER TABLE `ahp_criteria_weights`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ahp_criteria_weights_total`
+--
+ALTER TABLE `ahp_criteria_weights_total`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ahp_random_index`
+--
+ALTER TABLE `ahp_random_index`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `projects`

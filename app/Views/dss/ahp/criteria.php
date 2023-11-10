@@ -8,9 +8,9 @@
             <div class="card-header d-flex p-0">
             <h3 class="card-title p-3">Criteria</h3>
             <ul class="nav nav-pills ml-auto p-2">
-                <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Step 1 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Step 2 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Step 3</a></li>
+                <li class="nav-item"><a class="nav-link active" href="<?= base_url("ahp/$id_project/criteria") ?>">Step 1 <i class="fa fa-arrow-right"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/criteria_weight") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab_3">Step 3</a></li>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">

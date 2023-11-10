@@ -74,7 +74,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<?= base_url('ahp/index') ?>" class="nav-link <?= ($page_sub == 'ahp-index') ? 'active' : '' ?>">
+                <a href="<?= base_url('ahp') ?>" class="nav-link <?= ($page_sub == 'ahp-index') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Info</p>
                 </a>
