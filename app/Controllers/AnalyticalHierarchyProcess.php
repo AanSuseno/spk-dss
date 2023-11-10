@@ -124,7 +124,7 @@ class AnalyticalHierarchyProcess extends BaseController
             }
         }
 
-        $this->prosesCriteriaCount($id_project);
+        $this->processCriteriaCount($id_project);
     }
 
     function criteria_weight_update($id_project) {
@@ -165,7 +165,7 @@ class AnalyticalHierarchyProcess extends BaseController
             }
         }
 
-        $this->prosesCriteriaCount($id_project);
+        $this->processCriteriaCount($id_project);
 
         // Set flashdata for success message
         session()->setFlashdata('msg', 'Successfully updated criteria level importance.');
@@ -175,42 +175,120 @@ class AnalyticalHierarchyProcess extends BaseController
         return redirect()->to(base_url("ahp/$id_project/criteria_weight"));
     }
 
-    function prosesCriteriaCount($id_project) {
+    function processCriteriaCount($id_project) {
+        // Retrieve criteria data
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
+    
+        // Initialize models
         $modelCriteriaWeight = model('AhpCriteriaWeight');
         $modelCriteriaWeightTotal = model('ahpCriteriaWeightsTotal');
+    
+        // Retrieve criteria weight data
         $criteria_weight = $modelCriteriaWeight
             ->select('id_ahp_criteria_x as x, id_ahp_criteria_y as y, id, value')
             ->where(['id_projects' => $id_project])
             ->find();
-
+    
+        // Create a criteria weight array for easier access
         foreach ($criteria_weight as $key => $c) {
             $criteria_weight_arr[$c['x']][$c['y']] = $c['value'];
         }
-
+    
+        // Initialize criteria weight total array
         foreach ($criteria as $key => $c) {
             $criteria_weight_total[$c['id']] = 0;
         }
-
+    
+        // Calculate total weight for each criteria
         foreach ($criteria as $key => $cx) :
             foreach ($criteria as $key2 => $cy) :
                 $criteria_weight_total[$cy['id']] += $criteria_weight_arr[$cx['id']][$cy['id']];
             endforeach;
         endforeach;
-
-        // set total
+    
+        // Set total criteria weights in the database
         foreach ($criteria_weight_total as $key => $cwt) {
+            // Check if the criterion's total weight already exists in the database
             $in_db = $modelCriteriaWeightTotal->where(['id_criteria' => $key])->countAllResults();
+
+            // If the criterion's total weight exists, update the value; otherwise, insert a new record
             if ($in_db > 0) {
                 $modelCriteriaWeightTotal->set([
-                    'value'=> $cwt
+                    'value' => $cwt
                 ])->where(['id_criteria' => $key])->update();
             } else {
                 $modelCriteriaWeightTotal->insert([
                     'id_criteria' => $key,
-                    'value'=> $cwt
+                    'value' => $cwt
                 ]);
             }
         }
+    }
+
+    function alternatives($id_project) {
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+        $criteria = model('AhpCriteria')->getByProject($id_project)->find();
+
+        $data_view = [
+            'title' => $project->name . " - Analytical Hierarchy Process",
+            'id_project' => $id_project,
+            'page_master' => 'ahp',
+            'page_sub' => 'ahp-project',
+            'criteria' => $criteria,
+        ];
+        return view('dss/ahp/alternatives', $data_view);
+    }
+
+    function sub_criteria($id_project) {
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+        $criteria = model('AhpCriteria')->getByProject($id_project)->find();
+        $subCriteria = model('AhpSubCriteria')->getByProject($id_project)->find();
+        $sub_criteria = [];
+
+        foreach ($criteria as $key => $c) {
+            $sub_criteria[$c['id']] = [];
+        }
+        
+        foreach ($subCriteria as $key => $sc) {
+            array_push($sub_criteria[$sc['id_ahp_criteria']], [
+                'name' => $sc['name'],
+                'id' => $sc['id']
+            ]);
+        }
+
+        $data_view = [
+            'title' => $project->name . " - Analytical Hierarchy Process",
+            'id_project' => $id_project,
+            'page_master' => 'ahp',
+            'page_sub' => 'ahp-project',
+            'criteria' => $criteria,
+            'sub_criteria' => $sub_criteria,
+        ];
+        return view('dss/ahp/sub_criteria', $data_view);
+    }
+
+    function sub_criteria_create($id_project, $id_criteria) {
+        $modelSubCriteria = model('AhpSubCriteria');
+
+        $modelSubCriteria->insert([
+            'id_ahp_criteria' => $id_criteria,
+            'name' => $this->request->getPost('name')
+        ]);
+
+        session()->setFlashdata('msg', 'Successfully added a new sub criterion.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('ahp/' . $id_project . '/sub_criteria'));
+    }
+
+    function sub_criteria_delete($id_project, $id_sub_criteria) {
+        $modelSubCriteria = model('AhpSubCriteria');
+
+        $modelSubCriteria->where([
+            'id' => $id_sub_criteria,
+        ])->delete();
+
+        session()->setFlashdata('msg', 'Successfully deleted a sub criterion.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('ahp/' . $id_project . '/sub_criteria'));
     }
 }

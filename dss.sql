@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 10, 2023 at 12:05 PM
+-- Generation Time: Nov 10, 2023 at 04:58 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `dss`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ahp_alternatives`
+--
+
+CREATE TABLE `ahp_alternatives` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -99,6 +114,21 @@ INSERT INTO `ahp_random_index` (`id`, `criteria_count`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ahp_sub_criteria`
+--
+
+CREATE TABLE `ahp_sub_criteria` (
+  `id` int NOT NULL,
+  `id_ahp_criteria` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `projects`
 --
 
@@ -114,6 +144,12 @@ CREATE TABLE `projects` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `ahp_alternatives`
+--
+ALTER TABLE `ahp_alternatives`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ahp_criteria`
@@ -140,6 +176,12 @@ ALTER TABLE `ahp_random_index`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ahp_sub_criteria`
+--
+ALTER TABLE `ahp_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
@@ -148,6 +190,12 @@ ALTER TABLE `projects`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `ahp_alternatives`
+--
+ALTER TABLE `ahp_alternatives`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ahp_criteria`
@@ -172,6 +220,12 @@ ALTER TABLE `ahp_criteria_weights_total`
 --
 ALTER TABLE `ahp_random_index`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `ahp_sub_criteria`
+--
+ALTER TABLE `ahp_sub_criteria`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `projects`
