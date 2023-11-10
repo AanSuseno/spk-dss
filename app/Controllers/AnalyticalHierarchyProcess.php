@@ -181,6 +181,7 @@ class AnalyticalHierarchyProcess extends BaseController
     
         // Initialize models
         $modelCriteriaWeight = model('AhpCriteriaWeight');
+        $modelCriteriaPriority = model('AhpCriteriaPriority');
         $modelCriteriaWeightTotal = model('ahpCriteriaWeightsTotal');
     
         // Retrieve criteria weight data
@@ -197,6 +198,7 @@ class AnalyticalHierarchyProcess extends BaseController
         // Initialize criteria weight total array
         foreach ($criteria as $key => $c) {
             $criteria_weight_total[$c['id']] = 0;
+            $criteria_weight_nomralized_total[$c['id']] = 0;
         }
     
         // Calculate total weight for each criteria
@@ -223,6 +225,26 @@ class AnalyticalHierarchyProcess extends BaseController
                 ]);
             }
         }
+
+        foreach ($criteria as $key => $cx) :
+            foreach ($criteria as $key2 => $cy) :
+                $temp = $criteria_weight_arr[$cx['id']][$cy['id']]/$criteria_weight_total[$cy['id']];
+                $criteria_weight_nomralized_total[$cx['id']] += $temp;
+            endforeach;
+            $in_db = $modelCriteriaPriority->where(['id_ahp_criteria' => $cx['id']])->countAllResults();
+            $priority = $criteria_weight_nomralized_total[$cx['id']]/count($criteria);
+
+            if ($in_db > 0) {
+                $modelCriteriaPriority->set([
+                    'value' => $priority
+                ])->where(['id_ahp_criteria' => $key])->update();
+            } else {
+                $modelCriteriaPriority->set([
+                    'value' => $priority,
+                    'id_ahp_criteria' => $key
+                ])->insert();
+            }
+        endforeach;
     }
 
     function alternatives($id_project) {
