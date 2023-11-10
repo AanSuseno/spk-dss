@@ -16,5 +16,9 @@ $routes->group('/projects', function ($routes) {
 // ahp
 $routes->group('/ahp', function ($routes) {
 	$routes->get('/', 'AnalyticalHierarchyProcess::index');
+	$routes->get('detail/(:num)', 'AnalyticalHierarchyProcess::detail/$1');
+	$routes->get('(:num)/criteria', 'AnalyticalHierarchyProcess::criteria/$1');
+	$routes->post('(:num)/criteria/create', 'AnalyticalHierarchyProcess::criteria_create/$1');
+	$routes->post('(:num)/criteria/delete/(:num)', 'AnalyticalHierarchyProcess::criteria_delete/$1/$2');
 });
 
