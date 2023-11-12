@@ -26,5 +26,8 @@ $routes->group('/ahp', function ($routes) {
 	$routes->get('(:num)/sub_criteria', 'AnalyticalHierarchyProcess::sub_criteria/$1');
 	$routes->post('(:num)/sub_criteria/create/(:num)', 'AnalyticalHierarchyProcess::sub_criteria_create/$1/$2');
 	$routes->post('(:num)/sub_criteria/delete/(:num)', 'AnalyticalHierarchyProcess::sub_criteria_delete/$1/$2');
+	$routes->get('(:num)/sub_criteria_weight/', 'AnalyticalHierarchyProcess::sub_criteria_weight/$1');
+	$routes->get('(:num)/sub_criteria_weight/(:num)', 'AnalyticalHierarchyProcess::sub_criteria_weight_json/$1/$2');
+	$routes->post('(:num)/sub_criteria_weight/update', 'AnalyticalHierarchyProcess::sub_criteria_weight_update/$1');
 });
 

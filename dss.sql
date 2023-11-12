@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 10, 2023 at 05:27 PM
+-- Generation Time: Nov 12, 2023 at 11:55 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -144,6 +144,38 @@ CREATE TABLE `ahp_sub_criteria` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ahp_sub_criteria_priority`
+--
+
+CREATE TABLE `ahp_sub_criteria_priority` (
+  `id` int NOT NULL,
+  `id_ahp_sub_criteria` int NOT NULL,
+  `value` float NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ahp_sub_criteria_weights`
+--
+
+CREATE TABLE `ahp_sub_criteria_weights` (
+  `id` bigint NOT NULL,
+  `id_ahp_sub_criteria_x` int NOT NULL,
+  `id_ahp_sub_criteria_y` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `value` float NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `projects`
 --
 
@@ -203,6 +235,18 @@ ALTER TABLE `ahp_sub_criteria`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ahp_sub_criteria_priority`
+--
+ALTER TABLE `ahp_sub_criteria_priority`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ahp_sub_criteria_weights`
+--
+ALTER TABLE `ahp_sub_criteria_weights`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
@@ -253,6 +297,18 @@ ALTER TABLE `ahp_random_index`
 --
 ALTER TABLE `ahp_sub_criteria`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ahp_sub_criteria_priority`
+--
+ALTER TABLE `ahp_sub_criteria_priority`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ahp_sub_criteria_weights`
+--
+ALTER TABLE `ahp_sub_criteria_weights`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `projects`
