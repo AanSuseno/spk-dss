@@ -250,6 +250,12 @@ class AnalyticalHierarchyProcess extends BaseController
     function alternatives($id_project) {
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
+        $modelSubCriteria = model('AhpSubCriteria');
+        $sub_criteria = [];
+        foreach ($criteria as $key => $c) {
+            $sub_criteria[$c['id']] = $modelSubCriteria->where(['id_ahp_criteria' => $c['id']])->find();
+        }
+        $alternatives = model('AhpAlternatives')->getByProject($id_project)->find();
 
         $data_view = [
             'title' => $project->name . " - Analytical Hierarchy Process",
@@ -257,6 +263,8 @@ class AnalyticalHierarchyProcess extends BaseController
             'page_master' => 'ahp',
             'page_sub' => 'ahp-project',
             'criteria' => $criteria,
+            'sub_criteria' => $sub_criteria,
+            'alternatives' => $alternatives,
         ];
         return view('dss/ahp/alternatives', $data_view);
     }
@@ -492,5 +500,38 @@ class AnalyticalHierarchyProcess extends BaseController
                 }
             endforeach;
         }
+    }
+
+    function alternatives_create($id_project) {
+        $p = $this->request->getPost();
+        $criteria = model('AhpCriteria')->getByProject($id_project)->find();
+        $mAlternative = model('AhpAlternatives')->insert([
+            'id_projects' => $id_project,
+            'name' => $p['name']
+        ]);
+        $id_alternative = model('AhpAlternatives')->insertID();
+
+        foreach ($criteria as $key => $c) {
+            model('AhpAlternativesSubCriteriaPriority')->insert([
+                'id_ahp_alternatives' => $id_alternative,
+                'id_ahp_criteria' => $c['id'],
+                'id_ahp_sub_criteria_priority' => $p["crit_".$c['id']],
+            ]);
+        }
+
+        session()->setFlashdata('msg', 'Success.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('ahp/' . $id_project . '/alternatives'));
+    }
+
+    function alternatives_delete($id_project, $id_alternative) {
+        model('AhpAlternatives')->where([
+            'id_projects' => $id_project,
+            'id' => $id_alternative,
+        ])->delete();
+
+        session()->setFlashdata('msg', 'Deleted.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('ahp/' . $id_project . '/alternatives'));
     }
 }

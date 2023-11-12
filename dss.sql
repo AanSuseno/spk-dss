@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 12, 2023 at 11:55 AM
+-- Generation Time: Nov 12, 2023 at 02:31 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -31,6 +31,22 @@ CREATE TABLE `ahp_alternatives` (
   `id` int NOT NULL,
   `id_projects` int NOT NULL,
   `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ahp_alternatives_sub_criteria_priority`
+--
+
+CREATE TABLE `ahp_alternatives_sub_criteria_priority` (
+  `id` int NOT NULL,
+  `id_ahp_alternatives` bigint NOT NULL,
+  `id_ahp_criteria` bigint NOT NULL,
+  `id_ahp_sub_criteria_priority` int NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL
@@ -199,6 +215,12 @@ ALTER TABLE `ahp_alternatives`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ahp_alternatives_sub_criteria_priority`
+--
+ALTER TABLE `ahp_alternatives_sub_criteria_priority`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `ahp_criteria`
 --
 ALTER TABLE `ahp_criteria`
@@ -260,6 +282,12 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `ahp_alternatives`
 --
 ALTER TABLE `ahp_alternatives`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ahp_alternatives_sub_criteria_priority`
+--
+ALTER TABLE `ahp_alternatives_sub_criteria_priority`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --

@@ -10,8 +10,9 @@
             <ul class="nav nav-pills ml-auto p-2">
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/criteria") ?>">Step 1 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/criteria_weight") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link active" href="<?= base_url("ahp/$id_project/alternatives") ?>">Step 3 <i class="fa fa-arrow-right"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/sub_criteria") ?>">Step 3 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/sub_criteria_weight") ?>">Step 4 <i class="fa fa-arrow-right"></i></a></li>
+                <li class="nav-item"><a class="nav-link active" href="<?= base_url("ahp/$id_project/alternatives") ?>">Step 5 <i class="fa fa-arrow-right"></i></a></li>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -19,6 +20,31 @@
                     <div class="tab-pane active">
                         <div class="d-flex justify-content-end my-2">
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreateAlternative"><i class="fa fa-plus"></i> Add Alternatives</button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($alternatives as $key => $a) { ?>
+                                        <tr>
+                                            <td><?= $key +1 ?></td>
+                                            <td><?= $a['name'] ?></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteAlternative" onclick="deleteAlternative(<?= $a['id'] ?>)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
 
                     </div>
@@ -34,7 +60,7 @@
 
 <!-- modal create -->
 <div class="modal fade" id="modalCreateAlternative">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered  modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add Alternative</h5>
@@ -42,12 +68,26 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('ahp/' . $id_project . '/alternative/create') ?>" method="post">
-                <div class="modal-body">
+            <form action="<?= base_url('ahp/' . $id_project . '/alternatives/create') ?>" method="post">
+                <div class="modal-body" style="overflow-y: auto; max-height: 60vh">
                     <div class="form-group">
                         <label for="projectName">Alternative Name</label>
                         <input type="text" class="form-control" autocomplete="off" name="name" id="projectName" placeholder="Name">
                     </div>
+
+                    <?php foreach ($criteria as $key => $c) { ?>
+                        <hr>
+                        <label for=""><?= $c['name'] ?></label>
+                        <?php foreach ($sub_criteria[$c['id']] as $key_sc => $sc) { ?>
+                            <div class="form-check">
+                                <input class="form-check-input" required="required" type="radio" value="<?= $sc['id'] ?>" name="crit_<?= $c['id'] ?>" id="crit_<?= $sc['id'] ?>">
+                                <label class="form-check-label" for="crit_<?= $sc['id'] ?>">
+                                    <?= $sc['name'] ?>
+                                </label>
+                            </div>
+                        <?php } ?>
+                    <?php } ?>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -58,9 +98,36 @@
     </div>
 </div>
 <!-- ! modal create -->
+
+<!-- modal delete -->
+<div class="modal fade" id="modalDeleteAlternative">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Alternative</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="form-delete" method="post">
+                <div class="modal-body">
+                    <p>Are you sure you want to permanently delete this alternative?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Yes, delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ! modal delete -->
 <?= $this->endSection() ?>
 
 <?= $this->section('js') ?>
 <script>
+    function deleteAlternative(id) {
+        $('#form-delete').attr('action', '<?= base_url("ahp/$id_project/alternatives/delete/") ?>'+id)
+    }
 </script>
 <?= $this->endSection() ?>
