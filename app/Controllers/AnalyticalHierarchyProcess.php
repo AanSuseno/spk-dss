@@ -252,10 +252,11 @@ class AnalyticalHierarchyProcess extends BaseController
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
         $modelSubCriteria = model('AhpSubCriteria');
         $sub_criteria = [];
+        $alternatives = model('AhpAlternatives')->getByProject($id_project)->find();
+
         foreach ($criteria as $key => $c) {
             $sub_criteria[$c['id']] = $modelSubCriteria->where(['id_ahp_criteria' => $c['id']])->find();
         }
-        $alternatives = model('AhpAlternatives')->getByProject($id_project)->find();
 
         $data_view = [
             'title' => $project->name . " - Analytical Hierarchy Process",
@@ -515,11 +516,29 @@ class AnalyticalHierarchyProcess extends BaseController
             model('AhpAlternativesSubCriteriaPriority')->insert([
                 'id_ahp_alternatives' => $id_alternative,
                 'id_ahp_criteria' => $c['id'],
-                'id_ahp_sub_criteria_priority' => $p["crit_".$c['id']],
+                'id_ahp_sub_criteria' => $p["crit_".$c['id']],
             ]);
         }
 
         session()->setFlashdata('msg', 'Success.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('ahp/' . $id_project . '/alternatives'));
+    }
+
+    function alternatives_update($id_project, $id_alternative) {
+        $p = $this->request->getPost();
+        $criteria = model('AhpCriteria')->getByProject($id_project)->find();
+
+        foreach ($criteria as $key => $c) {
+            model('AhpAlternativesSubCriteriaPriority')->set([
+                'id_ahp_sub_criteria' => $p["crit_".$c['id']],
+            ])->where([
+                'id_ahp_criteria' => $c['id'],
+                'id_ahp_alternatives' => $id_alternative
+            ])->update();
+        }
+
+        session()->setFlashdata('msg', 'Success updated data.');
         session()->setFlashdata('msg-type', 'success');
         return redirect()->to(base_url('ahp/' . $id_project . '/alternatives'));
     }
@@ -533,5 +552,26 @@ class AnalyticalHierarchyProcess extends BaseController
         session()->setFlashdata('msg', 'Deleted.');
         session()->setFlashdata('msg-type', 'success');
         return redirect()->to(base_url('ahp/' . $id_project . '/alternatives'));
+    }
+
+    function alternatives_sub_criteria($id_project, $id_alternative) {
+        $criteria = model('AhpCriteria')->getByProject($id_project)->find();
+        $alternative_sub_c = [];
+
+        foreach ($criteria as $key => $c) {
+            $alternative_sub_c[$c['id']] = (int) model('AhpAlternativesSubCriteriaPriority')
+                ->select('ahp_alternatives_sub_criteria_priority.id_ahp_sub_criteria as sub_c')
+                ->join('ahp_alternatives a', 'a.id = ahp_alternatives_sub_criteria_priority.id_ahp_alternatives')
+                ->join('ahp_criteria c', 'c.id = ahp_alternatives_sub_criteria_priority.id_ahp_criteria')
+                ->where('a.id_projects', $id_project)
+                ->where('ahp_alternatives_sub_criteria_priority.id_ahp_alternatives', $id_alternative)
+                ->where('ahp_alternatives_sub_criteria_priority.id_ahp_criteria', $c['id'])
+                ->first()['sub_c'];
+        }
+        
+        return json_encode([
+            'criteria' => $criteria,
+            'alternative_sub_criteria' => $alternative_sub_c
+        ]);
     }
 }

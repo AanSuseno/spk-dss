@@ -37,6 +37,9 @@
                                             <td><?= $key +1 ?></td>
                                             <td><?= $a['name'] ?></td>
                                             <td>
+                                                <button class="btn btn-warning btn-sm" onclick="editAlternative(<?= $a['id'] ?>, '<?= $a['name'] ?>')">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
                                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteAlternative" onclick="deleteAlternative(<?= $a['id'] ?>)">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
@@ -99,6 +102,47 @@
 </div>
 <!-- ! modal create -->
 
+<!-- modal edit -->
+<div class="modal fade" id="modalEditAlternative">
+    <div class="modal-dialog modal-dialog-centered  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Alternative</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="form-update" method="post">
+                <div class="modal-body" style="overflow-y: auto; max-height: 60vh">
+                    <div class="form-group">
+                        <label for="projectName">Alternative Name</label>
+                        <input type="text" class="form-control" autocomplete="off" name="name" id="alternative-name" placeholder="Name">
+                    </div>
+
+                    <?php foreach ($criteria as $key => $c) { ?>
+                        <hr>
+                        <label for=""><?= $c['name'] ?></label>
+                        <?php foreach ($sub_criteria[$c['id']] as $key_sc => $sc) { ?>
+                            <div class="form-check">
+                                <input class="form-check-input" required="required" type="radio" value="<?= $sc['id'] ?>" name="crit_<?= $c['id'] ?>" id="crit_edit_<?= $sc['id'] ?>">
+                                <label class="form-check-label" for="crit_edit_<?= $sc['id'] ?>">
+                                    <?= $sc['name'] ?>
+                                </label>
+                            </div>
+                        <?php } ?>
+                    <?php } ?>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ! modal edit -->
+
 <!-- modal delete -->
 <div class="modal fade" id="modalDeleteAlternative">
     <div class="modal-dialog modal-dialog-centered">
@@ -128,6 +172,27 @@
 <script>
     function deleteAlternative(id) {
         $('#form-delete').attr('action', '<?= base_url("ahp/$id_project/alternatives/delete/") ?>'+id)
+    }
+
+    function editAlternative(id, name) {
+        $('#modalEditAlternative').modal('show')
+        $('#alternative-name').val(name)
+        $('#form-update').attr('action', '<?= base_url('ahp/' . $id_project . '/alternatives/update') ?>/'+id)
+        
+        $.ajax({
+            url: '<?= base_url("ahp/$id_project/alternatives/sub_c/") ?>'+id, // Specify the URL of the API or JSON file
+            type: 'GET', // Use the GET method
+            dataType: 'json', // Expect JSON data
+            success: function(data) {
+                Object.keys(data.alternative_sub_criteria).forEach((i) => {
+                    $('#crit_edit_'+data.alternative_sub_criteria[i]).prop('checked', true)
+                })
+            },
+            error: function(error) {
+                // Handle errors
+                console.error('Error:' + error);
+            }
+        });
     }
 </script>
 <?= $this->endSection() ?>

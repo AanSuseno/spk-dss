@@ -31,5 +31,7 @@ $routes->group('/ahp', function ($routes) {
 	$routes->get('(:num)/alternatives', 'AnalyticalHierarchyProcess::alternatives/$1');
 	$routes->post('(:num)/alternatives/create', 'AnalyticalHierarchyProcess::alternatives_create/$1');
 	$routes->post('(:num)/alternatives/delete/(:num)', 'AnalyticalHierarchyProcess::alternatives_delete/$1/$2');
+	$routes->get('(:num)/alternatives/sub_c/(:num)', 'AnalyticalHierarchyProcess::alternatives_sub_criteria/$1/$2');
+	$routes->post('(:num)/alternatives/update/(:num)', 'AnalyticalHierarchyProcess::alternatives_update/$1/$2');
 });
 
