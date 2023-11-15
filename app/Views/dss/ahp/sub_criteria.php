@@ -12,7 +12,6 @@
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/criteria_weight") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link active" href="<?= base_url("ahp/$id_project/sub_criteria") ?>">Step 3 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/sub_criteria_weight") ?>">Step 4 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/alternatives") ?>">Step 5 <i class="fa fa-arrow-right"></i></a></li>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">

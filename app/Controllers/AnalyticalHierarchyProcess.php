@@ -574,4 +574,41 @@ class AnalyticalHierarchyProcess extends BaseController
             'alternative_sub_criteria' => $alternative_sub_c
         ]);
     }
+
+    function result($id_project) {
+        $alternatives = model('AhpAlternatives')->where(['id_projects' => $id_project])->find();
+        $criteria = model('AhpCriteria')
+            ->select('ahp_criteria.*, p.value as priority')
+            ->join('ahp_criteria_priority p', 'p.id_ahp_criteria = ahp_criteria.id')
+            ->where(['id_projects' => $id_project])->find();
+        $alternative_priority = [];
+
+        foreach ($alternatives as $key_a => $a) {
+            foreach ($criteria as $key_c => $c) {
+                $alternative_priority[$a['id']][$c['id']] = model('AhpAlternativesSubCriteriaPriority')
+                    ->select('sc.name as name, sc_priority.value as value')
+                    ->join('ahp_alternatives a', 'a.id = ahp_alternatives_sub_criteria_priority.id_ahp_alternatives')
+                    ->join('ahp_criteria c', 'c.id = ahp_alternatives_sub_criteria_priority.id_ahp_criteria')
+                    ->join('ahp_sub_criteria sc', 'sc.id = ahp_alternatives_sub_criteria_priority.id_ahp_sub_criteria')
+                    ->join('ahp_sub_criteria_priority sc_priority', 'sc_priority.id_ahp_sub_criteria = sc.id')
+                    ->where([
+                        'ahp_alternatives_sub_criteria_priority.id_ahp_alternatives' => $a['id'],
+                        'ahp_alternatives_sub_criteria_priority.id_ahp_criteria' => $c['id'],
+                    ])->first();
+            }
+        }
+
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+
+        $data_view = [
+            'title' => $project->name . " - Analytical Hierarchy Process",
+            'id_project' => $id_project,
+            'page_master' => 'ahp',
+            'page_sub' => 'ahp-project',
+            'criteria' => $criteria,
+            'alternatives' => $alternatives,
+            'alternative_priority' => $alternative_priority
+        ];
+        return view('dss/ahp/result', $data_view);
+    }
 }

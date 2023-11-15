@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 12, 2023 at 02:31 PM
+-- Generation Time: Nov 15, 2023 at 04:51 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -46,7 +46,7 @@ CREATE TABLE `ahp_alternatives_sub_criteria_priority` (
   `id` int NOT NULL,
   `id_ahp_alternatives` bigint NOT NULL,
   `id_ahp_criteria` bigint NOT NULL,
-  `id_ahp_sub_criteria_priority` int NOT NULL,
+  `id_ahp_sub_criteria` int NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL
