@@ -13,7 +13,10 @@ class Projects extends BaseController
             'dss' => $dss,
             'page_master' => $dss,
             'page_sub' => $dss . "-project",
-            'projects' => model('Projects')->where('dss', $dss)->find()
+            'projects' => model('Projects')
+                ->where('dss', $dss)
+                ->where('id_users', session()->get('id'))
+                ->find()
         ];
         return view('dss/project', $data_view);
     }
@@ -21,7 +24,8 @@ class Projects extends BaseController
     public function create($dss) {
         $data_insert = [
             'name' => $this->request->getPost('name'),
-            'dss' => $dss
+            'dss' => $dss,
+            'id_users' => session()->get('id')
         ];
 
         model('Projects')->insert($data_insert);
@@ -35,7 +39,8 @@ class Projects extends BaseController
 
         model('Projects')->where([
             'id' => $id,
-            'dss' => $dss
+            'dss' => $dss,
+            'id_users' => session()->get('id')
         ])->delete();
 
         session()->setFlashdata('msg', 'Project deleted successfully.');

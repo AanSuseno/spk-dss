@@ -10,7 +10,7 @@ class Home extends BaseController
 	{
 		// jika user login tidak bisa kehalaman landing page
 		if (session()->get('user_login')) {
-			return redirect()->to(base_url('/user'));
+			return redirect()->to(base_url('/dashboard'));
 		}
 
         $setting = model('Settings')->first();
@@ -78,5 +78,10 @@ class Home extends BaseController
             'page_sub' => 'dashboard'
         ];
         return view('user_dashboard', $data_view);
+	}
+
+	function logout() {
+		session()->destroy();
+		return redirect()->to(base_url('/'));
 	}
 }

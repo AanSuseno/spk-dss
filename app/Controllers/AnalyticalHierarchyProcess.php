@@ -17,10 +17,16 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function detail($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         return redirect()->to(base_url("ahp/$id_project/criteria/"));
     }
 
     function criteria($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
 
         $data_view = [
@@ -34,6 +40,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function criteria_create($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $data_insert = [
             'name' => $this->request->getPost('name'),
             'id_projects' => $id_project
@@ -47,6 +56,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function criteria_delete($id_project, $id_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $where = [
             'id_projects' => $id_project,
             'id' => $id_criteria
@@ -60,6 +72,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function criteria_weight($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
 
@@ -94,6 +109,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function prosesCriteriaImportanceLevel($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         // Retrieve the list of criteria for the specified project.
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
 
@@ -128,6 +146,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function criteria_weight_update($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         // Get the AhpCriteriaWeight model
         $modelCriteriaWeight = model('AhpCriteriaWeight');
 
@@ -176,6 +197,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function processCriteriaCount($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         // Retrieve criteria data
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
     
@@ -248,6 +272,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function alternatives($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
         $modelSubCriteria = model('AhpSubCriteria');
@@ -271,6 +298,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function sub_criteria($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         // Retrieve project details
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         
@@ -307,6 +337,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
     
     function sub_criteria_create($id_project, $id_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         // Insert a new sub-criterion
         $modelSubCriteria = model('AhpSubCriteria');
         $modelSubCriteria->insert([
@@ -321,6 +354,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function sub_criteria_delete($id_project, $id_sub_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         // Delete the specified sub-criterion
         $modelSubCriteria = model('AhpSubCriteria');
         $modelSubCriteria->where([
@@ -334,6 +370,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function sub_criteria_weight($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
 
@@ -355,6 +394,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function prosesSubCriteriaImportanceLevel($id_project, $id_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         // Retrieve sub-criteria for the specified criteria
         $sub_criteria = model('AhpSubCriteria')->where(['id_ahp_criteria' => $id_criteria])->find();
     
@@ -389,6 +431,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function sub_criteria_weight_json($id_project, $id_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $sub_criteria = model('AhpSubCriteria')->select('id, name')->where(['id_ahp_criteria' => $id_criteria])->find();
         $modelSubCriteriaWeight = model('AhpSubCriteriaWeights');
         $ri = model('AhpRandomIndex')->where(['criteria_count' => count($sub_criteria)])->first()['value'];
@@ -413,6 +458,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function sub_criteria_weight_update($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $modelSubCriteriaWeights = model('AhpSubCriteriaWeights');
 
         foreach ($this->request->getPost('range') as $key => $value) {
@@ -453,6 +501,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function processSubCriteriaCount($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $modelSubCriteriaWeight = model('AhpSubCriteriaWeights');
         $modelSubCriteriaPriority = model('AhpSubCriteriaPriority');
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
@@ -504,6 +555,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function alternatives_create($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $p = $this->request->getPost();
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
         $mAlternative = model('AhpAlternatives')->insert([
@@ -526,6 +580,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function alternatives_update($id_project, $id_alternative) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $p = $this->request->getPost();
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
 
@@ -544,6 +601,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function alternatives_delete($id_project, $id_alternative) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         model('AhpAlternatives')->where([
             'id_projects' => $id_project,
             'id' => $id_alternative,
@@ -555,6 +615,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function alternatives_sub_criteria($id_project, $id_alternative) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
         $alternative_sub_c = [];
 
@@ -576,6 +639,9 @@ class AnalyticalHierarchyProcess extends BaseController
     }
 
     function result($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
         $alternatives = model('AhpAlternatives')->where(['id_projects' => $id_project])->find();
         $criteria = model('AhpCriteria')
             ->select('ahp_criteria.*, p.value as priority')
@@ -610,5 +676,18 @@ class AnalyticalHierarchyProcess extends BaseController
             'alternative_priority' => $alternative_priority
         ];
         return view('dss/ahp/result', $data_view);
+    }
+
+    function validate_project_access($id_project) {
+        $hitung = model('Projects')->where([
+            'id' => $id_project,
+            'id_users' => session()->get('id')
+        ])->countAllResults();
+
+        if ($hitung === 0) {
+            return false;
+        }
+
+        return true;
     }
 }

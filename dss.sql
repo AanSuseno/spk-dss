@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 16, 2023 at 01:05 PM
+-- Generation Time: Nov 16, 2023 at 01:26 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -197,6 +197,7 @@ CREATE TABLE `ahp_sub_criteria_weights` (
 
 CREATE TABLE `projects` (
   `id` int NOT NULL,
+  `id_users` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `dss` enum('ahp') NOT NULL,
   `created_at` datetime NOT NULL,
