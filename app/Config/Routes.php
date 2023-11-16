@@ -7,14 +7,16 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->group('/projects', function ($routes) {
+$routes->get('/dashboard', 'Home::dashboard_user', ['filter' => 'loginUser']);
+
+$routes->group('/projects', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:alphanum)', 'Projects::index/$1');
 	$routes->post('create/(:alphanum)', 'Projects::create/$1');
 	$routes->post('delete/(:alphanum)/(:num)', 'Projects::delete/$1/$2');
 });
 
 // ahp
-$routes->group('/ahp', function ($routes) {
+$routes->group('/ahp', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('/', 'AnalyticalHierarchyProcess::index');
 	$routes->get('detail/(:num)', 'AnalyticalHierarchyProcess::detail/$1');
 	$routes->get('(:num)/criteria', 'AnalyticalHierarchyProcess::criteria/$1');
