@@ -43,8 +43,16 @@ class AnalyticalHierarchyProcess extends BaseController
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
+
+        $name = $this->request->getPost('name');
+        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('ahp/' . $id_project . '/criteria'));
+        }
+
         $data_insert = [
-            'name' => $this->request->getPost('name'),
+            'name' => $name,
             'id_projects' => $id_project
         ];
 
@@ -340,11 +348,19 @@ class AnalyticalHierarchyProcess extends BaseController
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
+
+        $name = $this->request->getPost('name');
+        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('ahp/' . $id_project . '/sub_criteria'));
+        }
+
         // Insert a new sub-criterion
         $modelSubCriteria = model('AhpSubCriteria');
         $modelSubCriteria->insert([
             'id_ahp_criteria' => $id_criteria,
-            'name' => $this->request->getPost('name')
+            'name' => $name
         ]);
     
         // Set flash data and redirect to the sub-criteria page
@@ -558,11 +574,17 @@ class AnalyticalHierarchyProcess extends BaseController
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
-        $p = $this->request->getPost();
+
+        $name = $this->request->getPost('name');
+        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('ahp/' . $id_project . '/criteria'));
+        }
         $criteria = model('AhpCriteria')->getByProject($id_project)->find();
         $mAlternative = model('AhpAlternatives')->insert([
             'id_projects' => $id_project,
-            'name' => $p['name']
+            'name' => $name
         ]);
         $id_alternative = model('AhpAlternatives')->insertID();
 

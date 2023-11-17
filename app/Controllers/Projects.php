@@ -22,8 +22,16 @@ class Projects extends BaseController
     }
 
     public function create($dss) {
+        $name = $this->request->getPost('name');
+
+        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('projects/'.$dss));
+        }
+
         $data_insert = [
-            'name' => $this->request->getPost('name'),
+            'name' => $name,
             'dss' => $dss,
             'id_users' => session()->get('id')
         ];
