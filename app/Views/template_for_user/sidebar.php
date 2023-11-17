@@ -75,6 +75,29 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item <?= ($page_master == 'saw') ? 'menu-open' : '' ?>">
+            <a href="#" class="nav-link <?= ($page_master == 'saw') ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-balance-scale"></i>
+              <p>
+                SAW
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= base_url('saw') ?>" class="nav-link <?= ($page_sub == 'saw-index') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Info</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('projects/saw') ?>" class="nav-link <?= ($page_sub == 'saw-project') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Projects</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

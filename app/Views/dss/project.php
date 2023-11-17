@@ -46,7 +46,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('projects/create/ahp') ?>" method="post">
+            <form action="<?= base_url('projects/create/'.$dss) ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="projectName">Project Name</label>

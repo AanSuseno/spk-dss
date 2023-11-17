@@ -39,3 +39,8 @@ $routes->group('/ahp', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/result', 'AnalyticalHierarchyProcess::result/$1');
 });
 
+// saw
+$routes->group('/saw', ['filter' => 'loginUser'], function ($routes) {
+	$routes->get('/', 'SimpleAdditiveWeighting::index');
+});
+
