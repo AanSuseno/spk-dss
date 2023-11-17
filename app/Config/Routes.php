@@ -37,6 +37,7 @@ $routes->group('/ahp', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/alternatives/sub_c/(:num)', 'AnalyticalHierarchyProcess::alternatives_sub_criteria/$1/$2');
 	$routes->post('(:num)/alternatives/update/(:num)', 'AnalyticalHierarchyProcess::alternatives_update/$1/$2');
 	$routes->get('(:num)/result', 'AnalyticalHierarchyProcess::result/$1');
+	$routes->post('(:num)/random_index/update', 'AnalyticalHierarchyProcess::random_index_update/$1');
 });
 
 // saw

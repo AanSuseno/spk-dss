@@ -4,7 +4,7 @@
     <p>
         ASimple Additive Weighting (SAW) is a decision-making method that uses an additive approach to determine the best alternative from a set of alternatives based on specified criteria.
         The basic concept of the SAW method is to find the weighted sum of the performance ratings for each alternative on all attributes.
-        The SAW method requires a normalization process of the decision matrix (X) to a scale that can be compared with all existing alternative ratings.
+        The SAW method requires a normalization process of the decision matrix (X) to a scale that can be compared with all existing alternative ratings. (Defined by Bard)
     </p>
     <hr>
     <p>

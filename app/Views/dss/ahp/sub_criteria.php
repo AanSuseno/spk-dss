@@ -11,7 +11,19 @@
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/criteria") ?>">Step 1 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/criteria_weight") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link active" href="<?= base_url("ahp/$id_project/sub_criteria") ?>">Step 3 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/sub_criteria_weight") ?>">Step 4 <i class="fa fa-arrow-right"></i></a></li>
+                <?php 
+                    // min have 3 sub criteria each criteria
+                    $have_under_3_sub_criteria = false;
+                    foreach ($criteria as $key => $c) {
+                        if(count($sub_criteria[$c['id']]) < 3) {
+                            $have_under_2_sub_criteria = true;
+                            break;
+                        }
+                    }
+                ?>
+                <?php if (!$have_under_3_sub_criteria) { ?>
+                    <li class="nav-item"><a class="nav-link" href="<?= base_url("ahp/$id_project/sub_criteria_weight") ?>">Step 4 <i class="fa fa-arrow-right"></i></a></li>
+                <?php } ?>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -23,6 +35,11 @@
                                 <option value="tab_c<?= $c['id'] ?>"><?= $c['name'] ?></option>
                             <?php } ?>
                         </select>
+                        
+                        <div class="alert alert-info mt-2">
+                            <i class="fa fa-info-circle"></i>
+                            Each criterion must have a minimum of 3 sub-criteria.
+                        </div>
 
                         <?php foreach ($criteria as $key => $c) { ?>
                             <div id="tab_c<?= $c['id'] ?>" class="tab_c" style="<?= ($key != 0) ? 'display: none' : '' ?>">

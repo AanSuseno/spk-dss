@@ -106,11 +106,14 @@ $total_eigenvalue = 0;
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="bg-primary">Ramdom Index (RI)</th>
+                                    <th class="bg-primary">Random Index (RI)</th>
                                     <th>
                                         <?php
                                             echo number_format($random_index, 2, ".", ",");
                                         ?>
+                                        <button class="btn btn-warning btn-sm" onclick="editRandomIndex(<?= count($criteria) ?>, '<?= $random_index ?>')">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
                                     </th>
                                 </tr>
                                 <tr>
@@ -196,6 +199,33 @@ $total_eigenvalue = 0;
     </div>
 </div>
 <!-- ! modal create -->
+
+<!-- modal update random index -->
+<div class="modal fade" id="modalUpdateRandomIndex">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Random Index</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="form-update-random-index" method="post">
+                <div class="modal-body">
+                    <label>Scale: </label>
+                    <input type="number" class="form-control mb-3" name="count_criteria" value="<?= count($criteria) ?>">
+                    <label>Value: </label>
+                    <input type="number" class="form-control" step="0.01" name="value" value="<?= $random_index ?>">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ! modal update random index -->
 <?= $this->endSection() ?>
 
 <?= $this->section('js') ?>
@@ -225,6 +255,11 @@ $total_eigenvalue = 0;
             str = str.replace('CriteriaB', criteria_1)
         }
         $('.box-note').text('Scale: ' + val_range + ' | ' + str)
+    }
+
+    function editRandomIndex(criteria_count, value_now) {
+        $('#modalUpdateRandomIndex').modal()
+        $('#form-update-random-index').attr('action', '<?= base_url('ahp/' . $id_project . '/random_index/update') ?>')
     }
 </script>
 <?= $this->endSection() ?>

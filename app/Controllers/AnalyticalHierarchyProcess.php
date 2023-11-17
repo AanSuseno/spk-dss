@@ -44,6 +44,18 @@ class AnalyticalHierarchyProcess extends BaseController
             return redirect()->to(base_url('/dashboard'));
         }
 
+        $total_criteria = model('AhpCriteria')->where(['id_projects' => $id_project])->countAllResults();
+        $highest_random_index = model('AhpRandomIndex')
+            ->where(['id_projects' => $id_project])
+            ->orderBy('criteria_count', 'DESC')
+            ->first()['criteria_count'];
+
+        if ($total_criteria >= $highest_random_index) {
+            session()->setFlashdata('msg', "The number of criteria must not exceed the total number of random indexes ($highest_random_index).");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('ahp/' . $id_project . '/criteria'));
+        }
+
         $name = $this->request->getPost('name');
         if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
@@ -111,7 +123,10 @@ class AnalyticalHierarchyProcess extends BaseController
             'criteria' => $criteria,
             'criteria_weight' => $criteria_weight,
             'criteria_weight_arr' => $criteria_weight_arr,
-            'random_index' => model('AhpRandomIndex')->where(['criteria_count' => count($criteria)])->first()['value'],
+            'random_index' => model('AhpRandomIndex')->where([
+                'criteria_count' => count($criteria),
+                'id_projects' => $id_project
+            ])->first()['value'],
         ];
         return view('dss/ahp/criteria_weight', $data_view);
     }
@@ -404,7 +419,9 @@ class AnalyticalHierarchyProcess extends BaseController
             'page_master' => 'ahp',
             'page_sub' => 'ahp-project',
             'criteria' => $criteria,
-            'random_index' => model('AhpRandomIndex')->where(['criteria_count' => count($criteria)])->first()['value'],
+            'random_index' => model('AhpRandomIndex')
+                ->where(['criteria_count' => count($criteria), 'id_projects' => $id_project])
+                ->first()['value'],
         ];
         return view('dss/ahp/sub_criteria_weight', $data_view);
     }
@@ -452,7 +469,7 @@ class AnalyticalHierarchyProcess extends BaseController
         }
         $sub_criteria = model('AhpSubCriteria')->select('id, name')->where(['id_ahp_criteria' => $id_criteria])->find();
         $modelSubCriteriaWeight = model('AhpSubCriteriaWeights');
-        $ri = model('AhpRandomIndex')->where(['criteria_count' => count($sub_criteria)])->first()['value'];
+        $ri = model('AhpRandomIndex')->where(['criteria_count' => count($sub_criteria), 'id_projects' => $id_project])->first()['value'];
 
         $criteria_weight = $modelSubCriteriaWeight
             ->select('id_ahp_sub_criteria_x as x, id_ahp_sub_criteria_y as y, id, value')
@@ -711,5 +728,22 @@ class AnalyticalHierarchyProcess extends BaseController
         }
 
         return true;
+    }
+
+    function random_index_update($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
+        model('AhpRandomIndex')->set([
+            'value' => $this->request->getPost('value')
+        ])->where([
+            'criteria_count' => $this->request->getPost('count_criteria'),
+            'id_projects' => $id_project
+        ])->update();
+
+        session()->setFlashdata('msg', "Random index successfully updated.");
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url("ahp/$id_project/criteria_weight"));
     }
 }
