@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 17, 2023 at 12:40 PM
+-- Generation Time: Nov 18, 2023 at 09:05 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -196,6 +196,22 @@ CREATE TABLE `projects` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `saw_criteria`
+--
+
+CREATE TABLE `saw_criteria` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `cost_benefit` enum('benefit','cost') NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `settings`
 --
 
@@ -294,6 +310,12 @@ ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `saw_criteria`
+--
+ALTER TABLE `saw_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `settings`
 --
 ALTER TABLE `settings`
@@ -374,6 +396,12 @@ ALTER TABLE `ahp_sub_criteria_weights`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `saw_criteria`
+--
+ALTER TABLE `saw_criteria`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --

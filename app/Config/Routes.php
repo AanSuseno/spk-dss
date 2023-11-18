@@ -43,5 +43,9 @@ $routes->group('/ahp', ['filter' => 'loginUser'], function ($routes) {
 // saw
 $routes->group('/saw', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('/', 'SimpleAdditiveWeighting::index');
+	$routes->get('detail/(:num)', 'SimpleAdditiveWeighting::detail/$1');
+	$routes->get('(:num)/criteria', 'SimpleAdditiveWeighting::criteria/$1');
+	$routes->post('(:num)/criteria/create', 'SimpleAdditiveWeighting::criteria_create/$1');
+	$routes->post('(:num)/criteria/delete/(:num)', 'SimpleAdditiveWeighting::criteria_delete/$1/$2');
 });
 
