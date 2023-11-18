@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 18, 2023 at 09:05 PM
+-- Generation Time: Nov 18, 2023 at 09:59 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -204,6 +204,7 @@ CREATE TABLE `saw_criteria` (
   `id_projects` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `cost_benefit` enum('benefit','cost') NOT NULL,
+  `weight` float NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL

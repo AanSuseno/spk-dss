@@ -25,6 +25,11 @@ $title = (isset($title)) ? $title : 'App';
   <link rel="stylesheet" href="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- tippy -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
+  <!-- tippy -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
 </head>
 <!--
 `body` tag options:

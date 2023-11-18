@@ -9,7 +9,7 @@
             <h3 class="card-title p-3">Criteria</h3>
             <ul class="nav nav-pills ml-auto p-2">
                 <li class="nav-item"><a class="nav-link active" href="<?= base_url("saw/$id_project/criteria") ?>">Step 1 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= base_url("saw/$id_project/criteria_weight") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url("saw/$id_project/alternatives") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -25,6 +25,8 @@
                                     <th>No</th>
                                     <th>Name</th>
                                     <th>Benefit/Cost</th>
+                                    <th>Weight</th>
+                                    <th>Weight (%)</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -34,6 +36,8 @@
                                         <td><?= $key + 1 ?></td>
                                         <td><?= $c['name'] ?></td>
                                         <td><?= $c['cost_benefit'] ?></td>
+                                        <td><?= number_format($c['weight']) ?></td>
+                                        <td><?= number_format(($c['weight']/$total_criteria_weight) * 100, 2, ".", ",") ?>%</td>
                                         <td>
                                             <button
                                              class="btn btn-danger btn-sm"
@@ -80,6 +84,10 @@
                             <option value="c">Cost</option>
                             <option value="b">Benefit</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight</label>
+                        <input type="number" name="weight" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">

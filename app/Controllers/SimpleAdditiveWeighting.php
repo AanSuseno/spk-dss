@@ -28,13 +28,19 @@ class SimpleAdditiveWeighting extends BaseController
             return redirect()->to(base_url('/dashboard'));
         }
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+        $criteria = model('SawCriteria')->getByProject($id_project)->find(); 
+        $total_criteria_weight = 0;
+        foreach ($criteria as $key => $c) {
+            $total_criteria_weight += $c['weight'];
+        }
 
         $data_view = [
             'title' => $project->name . " - Simple Additive Weighting",
             'id_project' => $id_project,
             'page_master' => 'saw',
             'page_sub' => 'saw-project',
-            'criteria' => model('SawCriteria')->getByProject($id_project)->find()
+            'criteria' => $criteria,
+            'total_criteria_weight' => $total_criteria_weight,
         ];
         return view('dss/saw/criteria', $data_view);
     }
@@ -46,6 +52,7 @@ class SimpleAdditiveWeighting extends BaseController
 
         $name = $this->request->getPost('name');
         $c_b = $this->request->getPost('cost_benefit');
+        $weight = (float) $this->request->getPost('weight');
         if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
@@ -60,7 +67,8 @@ class SimpleAdditiveWeighting extends BaseController
         $data_insert = [
             'name' => $name,
             'cost_benefit' => $c_b,
-            'id_projects' => $id_project
+            'id_projects' => $id_project,
+            'weight' => $weight
         ];
 
         model('SawCriteria')->insert($data_insert);
