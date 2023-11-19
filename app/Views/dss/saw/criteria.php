@@ -46,6 +46,12 @@
                                              onclick="deleteCriteriaModal(<?= $c['id'] ?>)">
                                                 <i class="fa fa-trash"></i>
                                             </button>
+                                            <button
+                                             data-tippy-content="Sub Criteria of <?= $c['name'] ?>"
+                                             class="btn btn-secondary btn-sm tippy-me"
+                                             onclick="subCriteriaModal(<?= $c['id'] ?>, '<?= $c['name'] ?>')">
+                                                <i class="fa fa-list"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
@@ -100,6 +106,55 @@
 </div>
 <!-- ! modal create -->
 
+<!-- modal sub criteria -->
+<div class="modal fade" id="modalSubCriteria">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sub Criteria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto; max-height: 60vh">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Weight</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-sub-criteria">
+                    </tbody>
+                </table>
+                <hr>
+                <h4>Create New Sub Criteria for <span id="criteria-name"></span></h4>
+                <form action="" method="post" id="form-create-sub-criteria">
+                    <table class="table table-borderless">
+                        <tr>
+                            <td>Name</td>
+                            <td>
+                                <input type="text" required autocomplete="off" name="name" id="" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td><input type="number" required name="weight" id="" class="form-control"></td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-primary btn-sm mt-2 col-12">Add</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ! modal sub criteria -->
+
 <!-- modal delete -->
 <div class="modal fade" id="modalDeleteCriteria">
     <div class="modal-dialog modal-dialog-centered">
@@ -129,6 +184,41 @@
 <script>
     function deleteCriteriaModal(id) {
         $('#form-delete').attr('action', '<?= base_url("saw/$id_project/criteria/delete") ?>/'+id)
+    }
+
+    function subCriteriaModal(id_criteria, criteria_name) {
+        $('#modalSubCriteria').modal()
+        $('#criteria-name').text(criteria_name)
+        $('#form-create-sub-criteria').attr('action', '<?= base_url("saw/$id_project/sub_criteria/create/") ?>'+id_criteria)
+
+        $.ajax({
+            url: '<?= base_url("saw/$id_project/sub_criteria/") ?>'+id_criteria, // Specify the URL of the API or JSON file
+            type: 'GET', // Use the GET method
+            dataType: 'json', // Expect JSON data
+            success: function(data) {
+                var str_table = ''
+                var sub_criteria = data.sub_criteria
+
+                sub_criteria.forEach((i, idx) => {
+                    str_table += `
+                        <tr>
+                            <td>${idx+1}</td>
+                            <td>${i.name}</td>
+                            <td>${i.weight}</td>
+                            <td>
+                                <a href="<?= base_url("saw/$id_project/sub_criteria/delete/") ?>${i.id}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    `
+                })
+
+                $('#table-sub-criteria').html(str_table)
+            },
+            error: function(error) {
+                // Handle errors
+                console.error('Error:' + error);
+            }
+        });
     }
 </script>
 <?= $this->endSection() ?>

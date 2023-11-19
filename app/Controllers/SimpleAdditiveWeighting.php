@@ -53,7 +53,7 @@ class SimpleAdditiveWeighting extends BaseController
         $name = $this->request->getPost('name');
         $c_b = $this->request->getPost('cost_benefit');
         $weight = (float) $this->request->getPost('weight');
-        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
@@ -101,28 +101,34 @@ class SimpleAdditiveWeighting extends BaseController
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         $criteria = model('SawCriteria')->getByProject($id_project)->find(); 
         $alternatives = model('SawAlternatives')->where(['id_projects' => $id_project])->find();
+        $sc = [];
+        $sub_criteria = [];
         $alternatives_weight = [];
+
+        foreach ($criteria as $key => $c) {
+            $sc[$c['id']] = model('SawSubCriteria')->where(['id_criteria' => $c['id']])->find();
+        }
+
+        foreach ($sc as $key => $sc_c) {
+            foreach ($sc_c as $keyc => $sc_sub) {
+                $sub_criteria[$key][$sc_sub['id']] = $sc_sub;
+            }
+        }
 
         foreach ($alternatives as $key => $a) {
             foreach ($criteria as $keyc => $c) {
-                if (model('SawAlternativesCriteriaWeight')->where([
-                    'id_alternatives' => $a['id'],
-                    'id_criteria' => $c['id'],
-                ])->countAllResults() === 0) {
-                    model('SawAlternativesCriteriaWeight')->insert([
-                        'id_alternatives' => $a['id'],
-                        'id_criteria' => $c['id'],
-                        'weight' => 1
-                    ]);
-                    $alternatives_weight[$a['id']][$c['id']] = 1;
-                } else {
-                    $alternatives_weight[$a['id']][$c['id']] = model('SawAlternativesCriteriaWeight')->where([
-                        'id_alternatives' => $a['id'],
-                        'id_criteria' => $c['id'],
-                    ])->first()['weight'];
-                }
+                $alternatives_weight[$a['id']][$c['id']] = model('SawAlternativesCriteriaWeight')
+                ->select('sc.weight as weight, sc.name as name, sc.id as id')
+                ->join('saw_sub_criteria sc', 'sc.id = saw_alternatives_criteria_weight.id_saw_sub_criteria')
+                ->where([
+                    'saw_alternatives_criteria_weight.id_alternatives' => $a['id'],
+                    'saw_alternatives_criteria_weight.id_criteria' => $c['id'],
+                ])->first();
             }
         }
+
+        // d($sub_criteria);
+        // dd($alternatives_weight);
 
         $data_view = [
             'title' => $project->name . " - Simple Additive Weighting",
@@ -132,6 +138,7 @@ class SimpleAdditiveWeighting extends BaseController
             'criteria' => $criteria,
             'alternatives' => $alternatives,
             'alternatives_weight' => $alternatives_weight,
+            'sub_criteria' => $sub_criteria,
         ];
         return view('dss/saw/alternatives', $data_view);
     }
@@ -145,7 +152,7 @@ class SimpleAdditiveWeighting extends BaseController
         d($this->request->getPost());
         
         $name = $this->request->getPost('name');
-        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
@@ -163,7 +170,7 @@ class SimpleAdditiveWeighting extends BaseController
             model('SawAlternativesCriteriaWeight')->insert([
                 'id_alternatives' => $id_alternative,
                 'id_criteria' => $c,
-                'weight' => $this->request->getPost('weight')[$key]
+                'id_saw_sub_criteria' => $this->request->getPost('crit_'.$c)
             ]);
         }
 
@@ -195,7 +202,21 @@ class SimpleAdditiveWeighting extends BaseController
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         $criteria = model('SawCriteria')->getByProject($id_project)->find(); 
         $alternatives = model('SawAlternatives')->where(['id_projects' => $id_project])->find();
+        $alternatives = model('SawAlternatives')->where(['id_projects' => $id_project])->find();
+        $sc = [];
+        $sub_criteria = [];
         $alternatives_weight = [];
+
+        foreach ($criteria as $key => $c) {
+            $sc[$c['id']] = model('SawSubCriteria')->where(['id_criteria' => $c['id']])->find();
+        }
+
+        foreach ($sc as $key => $sc_c) {
+            foreach ($sc_c as $keyc => $sc_sub) {
+                $sub_criteria[$key][$sc_sub['id']] = $sc_sub;
+            }
+        }
+
         $total_criteria_weight = 0;
         foreach ($criteria as $key => $c) {
             $total_criteria_weight += $c['weight'];
@@ -203,10 +224,13 @@ class SimpleAdditiveWeighting extends BaseController
 
         foreach ($alternatives as $key => $a) {
             foreach ($criteria as $keyc => $c) {
-                $alternatives_weight[$a['id']][$c['id']] = model('SawAlternativesCriteriaWeight')->where([
-                    'id_alternatives' => $a['id'],
-                    'id_criteria' => $c['id'],
-                ])->first()['weight'];
+                $alternatives_weight[$a['id']][$c['id']] = model('SawAlternativesCriteriaWeight')
+                ->select('sc.weight as weight, sc.name as name, sc.id as id')
+                ->join('saw_sub_criteria sc', 'sc.id = saw_alternatives_criteria_weight.id_saw_sub_criteria')
+                ->where([
+                    'saw_alternatives_criteria_weight.id_alternatives' => $a['id'],
+                    'saw_alternatives_criteria_weight.id_criteria' => $c['id'],
+                ])->first();
             }
         }
 
@@ -219,6 +243,7 @@ class SimpleAdditiveWeighting extends BaseController
             'alternatives' => $alternatives,
             'alternatives_weight' => $alternatives_weight,
             'total_criteria_weight' => $total_criteria_weight,
+            'sub_criteria' => $sub_criteria,
         ];
         return view('dss/saw/normalized', $data_view);
     }
@@ -234,5 +259,62 @@ class SimpleAdditiveWeighting extends BaseController
         }
 
         return true;
+    }
+
+    function sub_criteria_json($id_project, $id_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
+        $sub_criteria = model('SawSubCriteria')
+            ->select('name, id, weight')
+            ->where([
+                'id_projects' => $id_project,
+                'id_criteria' => $id_criteria
+            ])->find();
+
+        return json_encode(['sub_criteria' => $sub_criteria]);
+    }
+
+    function sub_criteria_create($id_project, $id_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
+        $name = $this->request->getPost('name');
+        $weight = (float) $this->request->getPost('weight');
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
+        }
+
+        $data_insert = [
+            'id_projects' => $id_project,
+            'id_criteria' => $id_criteria,
+            'name' => $name,
+            'weight' => $weight
+        ];
+
+        model('SawSubCriteria')->insert($data_insert);
+
+        session()->setFlashdata('msg', 'Successfully added a new sub criterion.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
+    }
+
+    function sub_criteria_delete($id_project, $id_sub_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
+        model('SawSubCriteria')->where([
+            'id_projects' => $id_project,
+            'id' => $id_sub_criteria
+        ])->delete();
+
+        session()->setFlashdata('msg', 'Successfully deleted a sub criteria.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
     }
 }

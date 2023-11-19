@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 19, 2023 at 02:31 AM
+-- Generation Time: Nov 19, 2023 at 10:43 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -218,7 +218,7 @@ CREATE TABLE `saw_alternatives_criteria_weight` (
   `id` bigint NOT NULL,
   `id_criteria` int NOT NULL,
   `id_alternatives` bigint NOT NULL,
-  `weight` int NOT NULL,
+  `id_saw_sub_criteria` bigint NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL
@@ -235,6 +235,23 @@ CREATE TABLE `saw_criteria` (
   `id_projects` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `cost_benefit` enum('benefit','cost') NOT NULL,
+  `weight` float NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saw_sub_criteria`
+--
+
+CREATE TABLE `saw_sub_criteria` (
+  `id` bigint NOT NULL,
+  `id_projects` int NOT NULL,
+  `id_criteria` int NOT NULL,
+  `name` varchar(255) NOT NULL,
   `weight` float NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -360,6 +377,12 @@ ALTER TABLE `saw_criteria`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `saw_sub_criteria`
+--
+ALTER TABLE `saw_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `settings`
 --
 ALTER TABLE `settings`
@@ -459,6 +482,12 @@ ALTER TABLE `saw_alternatives_criteria_weight`
 --
 ALTER TABLE `saw_criteria`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `saw_sub_criteria`
+--
+ALTER TABLE `saw_sub_criteria`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `settings`

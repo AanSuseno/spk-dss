@@ -44,6 +44,12 @@
       })
     <?php endif ?>
   })
+
+  tippy('.tippy-me', {
+      interactive: true,
+      arrow: true,
+      placement: 'top-start',
+  });
 </script>
 
 <!-- script per page -->

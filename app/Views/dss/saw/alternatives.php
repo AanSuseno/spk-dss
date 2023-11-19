@@ -45,9 +45,13 @@
                                         <td><?= $a['name'] ?></td>
                                         <?php
                                         foreach ($criteria as $key_c => $c) {
-                                        $arr_min_max[$c['id']][] = $alternatives_weight[$a['id']][$c['id']];
+                                        $arr_min_max[$c['id']][] = $alternatives_weight[$a['id']][$c['id']]['weight'];
                                         ?>
-                                            <td><?= number_format($alternatives_weight[$a['id']][$c['id']]) ?></td>
+                                            <td
+                                             class="tippy-me"
+                                             data-tippy-content="<?= $sub_criteria[$c['id']][$alternatives_weight[$a['id']][$c['id']]['id']]['name'] ?>">
+                                                <?= number_format($alternatives_weight[$a['id']][$c['id']]['weight']) ?>
+                                            </td>
                                         <?php } ?>
                                         <td>
                                             <button
@@ -104,17 +108,19 @@
                         <label for="projectName">Alternative Name</label>
                         <input type="text" class="form-control" required autocomplete="off" name="name" id="projectName" placeholder="Name">
                     </div>
-                    <table class="table table-borderless">
-                        <?php foreach ($criteria as $key => $c) { ?>
-                            <tr>
-                                <td><?= $c['name'] ?></td>
-                                <td>
-                                    <input type="hidden" name="criteria[]" value="<?= $c['id'] ?>">
-                                    <input type="number" value="1" name="weight[]" class="form-control">
-                                </td>
-                            </tr>
+                    <?php foreach ($criteria as $key => $c) { ?>
+                        <hr>
+                        <input type="hidden" name="criteria[]" value="<?= $c['id'] ?>">
+                        <label for=""><?= $c['name'] ?></label>
+                        <?php foreach ($sub_criteria[$c['id']] as $key_sc => $sc) { ?>
+                            <div class="form-check">
+                                <input class="form-check-input" required="required" type="radio" value="<?= $sc['id'] ?>" name="crit_<?= $c['id'] ?>" id="crit_edit_<?= $sc['id'] ?>">
+                                <label class="form-check-label" for="crit_edit_<?= $sc['id'] ?>">
+                                    <?= $sc['name'] ?>
+                                </label>
+                            </div>
                         <?php } ?>
-                    </table>
+                    <?php } ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

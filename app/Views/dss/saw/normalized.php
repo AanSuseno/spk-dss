@@ -20,7 +20,7 @@
                         $arr_min_max = [];
                         foreach ($alternatives as $key => $a) :
                             foreach ($criteria as $key_c => $c) {
-                                $arr_min_max[$c['id']][] = $alternatives_weight[$a['id']][$c['id']];
+                                $arr_min_max[$c['id']][] = (float) $alternatives_weight[$a['id']][$c['id']]['weight'];
                             }
                         endforeach;
                         ?>
@@ -53,18 +53,18 @@
                                         $rank[$a['id']] = 0;
                                         $rank_tippy_str[$a['id']] = "";
                                         foreach ($criteria as $key_c => $c) {
-                                            $temp = ($c['cost_benefit'] == 'benefit') ? $alternatives_weight[$a['id']][$c['id']]/max($arr_min_max[$c['id']]) : min($arr_min_max[$c['id']])/$alternatives_weight[$a['id']][$c['id']];
+                                            $temp = ($c['cost_benefit'] == 'benefit') ? $alternatives_weight[$a['id']][$c['id']]['weight']/max($arr_min_max[$c['id']]) : min($arr_min_max[$c['id']])/$alternatives_weight[$a['id']][$c['id']]['weight'];
                                             $rank[$a['id']] += $temp * ($c['weight'])/$total_criteria_weight;
                                             $rank_tippy_str[$a['id']] .=  "(" . number_format(($c['weight']/$total_criteria_weight) * 100, 2, ".", ",") . "%)×(" . number_format($temp, 2, ".", ",") . ") + ";
                                         ?>
                                             <td
                                              class="tippy-me"
                                              data-tippy-content="<?= ($c['cost_benefit'] == 'benefit') ?
-                                              $alternatives_weight[$a['id']][$c['id']] . '/' . max($arr_min_max[$c['id']]) :
-                                              min($arr_min_max[$c['id']]) . '/' . $alternatives_weight[$a['id']][$c['id']] ?>">
+                                              $alternatives_weight[$a['id']][$c['id']]['weight'] . '/' . max($arr_min_max[$c['id']]) :
+                                              min($arr_min_max[$c['id']]) . '/' . $alternatives_weight[$a['id']][$c['id']]['weight'] ?>">
                                                 <?= ($c['cost_benefit'] == 'benefit') ?
-                                                number_format($alternatives_weight[$a['id']][$c['id']]/max($arr_min_max[$c['id']]), 2, ".", ",") :
-                                                number_format(min($arr_min_max[$c['id']])/$alternatives_weight[$a['id']][$c['id']], 2, ".", ",") ?>
+                                                number_format($alternatives_weight[$a['id']][$c['id']]['weight']/max($arr_min_max[$c['id']]), 2, ".", ",") :
+                                                number_format(min($arr_min_max[$c['id']])/$alternatives_weight[$a['id']][$c['id']]['weight'], 2, ".", ",") ?>
                                             </td>
                                         <?php } ?>
                                         <td
@@ -111,12 +111,6 @@
             placement: 'top-start',
         });
     <?php } ?>
-    tippy('.tippy-me', {
-        interactive: true,
-        content: $(this).text(),
-        arrow: true,
-        placement: 'top-start',
-    });
 
     function deleteAlternativeModal(id) {
         $('#form-delete').attr('action', '<?= base_url("saw/$id_project/alternatives/delete") ?>/'+id)
