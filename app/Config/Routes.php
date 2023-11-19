@@ -47,5 +47,8 @@ $routes->group('/saw', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/criteria', 'SimpleAdditiveWeighting::criteria/$1');
 	$routes->post('(:num)/criteria/create', 'SimpleAdditiveWeighting::criteria_create/$1');
 	$routes->post('(:num)/criteria/delete/(:num)', 'SimpleAdditiveWeighting::criteria_delete/$1/$2');
+	$routes->get('(:num)/alternatives', 'SimpleAdditiveWeighting::alternatives/$1');
+	$routes->post('(:num)/alternatives/create', 'SimpleAdditiveWeighting::alternatives_create/$1');
+	$routes->post('(:num)/alternatives/delete/(:num)', 'SimpleAdditiveWeighting::alternatives_delete/$1/$2');
 });
 

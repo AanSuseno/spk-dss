@@ -94,6 +94,100 @@ class SimpleAdditiveWeighting extends BaseController
         return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
     }
 
+    function alternatives($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+        $criteria = model('SawCriteria')->getByProject($id_project)->find(); 
+        $alternatives = model('SawAlternatives')->where(['id_projects' => $id_project])->find();
+        $alternatives_weight = [];
+
+        foreach ($alternatives as $key => $a) {
+            foreach ($criteria as $keyc => $c) {
+                if (model('SawAlternativesCriteriaWeight')->where([
+                    'id_alternatives' => $a['id'],
+                    'id_criteria' => $c['id'],
+                ])->countAllResults() === 0) {
+                    model('SawAlternativesCriteriaWeight')->insert([
+                        'id_alternatives' => $a['id'],
+                        'id_criteria' => $c['id'],
+                        'weight' => 1
+                    ]);
+                    $alternatives_weight[$a['id']][$c['id']] = 1;
+                } else {
+                    $alternatives_weight[$a['id']][$c['id']] = model('SawAlternativesCriteriaWeight')->where([
+                        'id_alternatives' => $a['id'],
+                        'id_criteria' => $c['id'],
+                    ])->first()['weight'];
+                }
+            }
+        }
+
+        $data_view = [
+            'title' => $project->name . " - Simple Additive Weighting",
+            'id_project' => $id_project,
+            'page_master' => 'saw',
+            'page_sub' => 'saw-project',
+            'criteria' => $criteria,
+            'alternatives' => $alternatives,
+            'alternatives_weight' => $alternatives_weight,
+        ];
+        return view('dss/saw/alternatives', $data_view);
+    }
+
+    function alternatives_create($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+
+        d($this->request->getPost());
+        
+        $name = $this->request->getPost('name');
+        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
+        }
+
+        // insert alternatives
+        model('SawAlternatives')->insert([
+            'name' => $name,
+            'id_projects' => $id_project
+        ]);
+        $id_alternative = model('SawAlternatives')->insertID();
+
+        // insert alternatives criteria weight
+        foreach ($this->request->getPost('criteria') as $key => $c) {
+            model('SawAlternativesCriteriaWeight')->insert([
+                'id_alternatives' => $id_alternative,
+                'id_criteria' => $c,
+                'weight' => $this->request->getPost('weight')[$key]
+            ]);
+        }
+
+        session()->setFlashdata('msg', 'Successfully added a new alternative.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('saw/' . $id_project . '/alternatives'));
+    }
+
+    function alternatives_delete($id_project, $id_alternative) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $where = [
+            'id_projects' => $id_project,
+            'id' => $id_alternative
+        ];
+
+        model('SawAlternatives')->where($where)->delete();
+
+        session()->setFlashdata('msg', 'Successfully deleted a alternative.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('saw/' . $id_project . '/alternatives'));
+    }
+
     function validate_project_access($id_project) {
         $hitung = model('Projects')->where([
             'id' => $id_project,

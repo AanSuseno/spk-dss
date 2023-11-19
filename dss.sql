@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 18, 2023 at 09:59 PM
+-- Generation Time: Nov 19, 2023 at 02:31 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -196,6 +196,37 @@ CREATE TABLE `projects` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `saw_alternatives`
+--
+
+CREATE TABLE `saw_alternatives` (
+  `id` bigint NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saw_alternatives_criteria_weight`
+--
+
+CREATE TABLE `saw_alternatives_criteria_weight` (
+  `id` bigint NOT NULL,
+  `id_criteria` int NOT NULL,
+  `id_alternatives` bigint NOT NULL,
+  `weight` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `saw_criteria`
 --
 
@@ -311,6 +342,18 @@ ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `saw_alternatives`
+--
+ALTER TABLE `saw_alternatives`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `saw_alternatives_criteria_weight`
+--
+ALTER TABLE `saw_alternatives_criteria_weight`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `saw_criteria`
 --
 ALTER TABLE `saw_criteria`
@@ -398,6 +441,18 @@ ALTER TABLE `ahp_sub_criteria_weights`
 --
 ALTER TABLE `projects`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `saw_alternatives`
+--
+ALTER TABLE `saw_alternatives`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `saw_alternatives_criteria_weight`
+--
+ALTER TABLE `saw_alternatives_criteria_weight`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `saw_criteria`
