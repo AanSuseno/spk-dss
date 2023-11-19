@@ -188,6 +188,41 @@ class SimpleAdditiveWeighting extends BaseController
         return redirect()->to(base_url('saw/' . $id_project . '/alternatives'));
     }
 
+    function normalized($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+        $criteria = model('SawCriteria')->getByProject($id_project)->find(); 
+        $alternatives = model('SawAlternatives')->where(['id_projects' => $id_project])->find();
+        $alternatives_weight = [];
+        $total_criteria_weight = 0;
+        foreach ($criteria as $key => $c) {
+            $total_criteria_weight += $c['weight'];
+        }
+
+        foreach ($alternatives as $key => $a) {
+            foreach ($criteria as $keyc => $c) {
+                $alternatives_weight[$a['id']][$c['id']] = model('SawAlternativesCriteriaWeight')->where([
+                    'id_alternatives' => $a['id'],
+                    'id_criteria' => $c['id'],
+                ])->first()['weight'];
+            }
+        }
+
+        $data_view = [
+            'title' => $project->name . " - Simple Additive Weighting",
+            'id_project' => $id_project,
+            'page_master' => 'saw',
+            'page_sub' => 'saw-project',
+            'criteria' => $criteria,
+            'alternatives' => $alternatives,
+            'alternatives_weight' => $alternatives_weight,
+            'total_criteria_weight' => $total_criteria_weight,
+        ];
+        return view('dss/saw/normalized', $data_view);
+    }
+
     function validate_project_access($id_project) {
         $hitung = model('Projects')->where([
             'id' => $id_project,

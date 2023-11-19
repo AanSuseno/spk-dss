@@ -50,5 +50,6 @@ $routes->group('/saw', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/alternatives', 'SimpleAdditiveWeighting::alternatives/$1');
 	$routes->post('(:num)/alternatives/create', 'SimpleAdditiveWeighting::alternatives_create/$1');
 	$routes->post('(:num)/alternatives/delete/(:num)', 'SimpleAdditiveWeighting::alternatives_delete/$1/$2');
+	$routes->get('(:num)/normalized', 'SimpleAdditiveWeighting::normalized/$1');
 });
 

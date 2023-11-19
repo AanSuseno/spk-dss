@@ -10,7 +10,7 @@
             <ul class="nav nav-pills ml-auto p-2">
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("saw/$id_project/criteria") ?>">Step 1 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link active" href="<?= base_url("saw/$id_project/alternatives") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= base_url("saw/$id_project/normalized") ?>">Step 3 <i class="fa fa-arrow-right"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url("saw/$id_project/normalized") ?>">Step 3</a></li>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -42,7 +42,7 @@
                                 foreach ($alternatives as $key => $a) : ?>
                                     <tr>
                                         <td><?= $key + 1 ?></td>
-                                        <td><?= $c['name'] ?></td>
+                                        <td><?= $a['name'] ?></td>
                                         <?php
                                         foreach ($criteria as $key_c => $c) {
                                         $arr_min_max[$c['id']][] = $alternatives_weight[$a['id']][$c['id']];
@@ -60,22 +60,22 @@
                                         </td>
                                     </tr>
                                 <?php endforeach;?>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="2"> </td>
-                                        <?php
-                                        foreach ($criteria as $key_c => $c) {
-                                            if (count($arr_min_max) === 0) {
-                                                echo "<td>0</td>";
-                                                continue;
-                                            };
-                                        ?>
-                                            <th><?= ($c['cost_benefit'] === 'benefit') ? max($arr_min_max[$c['id']]) : min($arr_min_max[$c['id']]) ?></th>
-                                        <?php } ?>
-                                        <td></td>
-                                    </tr>
-                                </tfoot>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"> </td>
+                                    <?php
+                                    foreach ($criteria as $key_c => $c) {
+                                        if (count($arr_min_max) === 0) {
+                                            echo "<td>0</td>";
+                                            continue;
+                                        };
+                                    ?>
+                                        <th><?= ($c['cost_benefit'] === 'benefit') ? max($arr_min_max[$c['id']]) : min($arr_min_max[$c['id']]) ?></th>
+                                    <?php } ?>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <!-- /.tab-pane -->
