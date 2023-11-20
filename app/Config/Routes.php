@@ -56,3 +56,12 @@ $routes->group('/saw', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/sub_criteria/delete/(:num)', 'SimpleAdditiveWeighting::sub_criteria_delete/$1/$2');
 });
 
+// wp
+$routes->group('/wp', ['filter' => 'loginUser'], function ($routes) {
+	$routes->get('/', 'WeightedProduct::index');
+	$routes->get('detail/(:num)', 'WeightedProduct::detail/$1');
+	$routes->get('(:num)/criteria', 'WeightedProduct::criteria/$1');
+	$routes->post('(:num)/criteria/create', 'WeightedProduct::criteria_create/$1');
+	$routes->post('(:num)/criteria/delete/(:num)', 'WeightedProduct::criteria_delete/$1/$2');
+});
+

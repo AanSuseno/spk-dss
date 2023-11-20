@@ -36,9 +36,9 @@
                with font-awesome or any other icon font library -->
           <li class="nav-item <?= ($page_master == 'dashboard') ? 'menu-open' : '' ?>">
             <a href="#" class="nav-link  <?= ($page_master == 'dashboard') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
-                Dashboard
+                HOME
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -46,7 +46,7 @@
               <li class="nav-item">
                 <a href="<?= base_url('dashboard') ?>" class="nav-link <?= ($page_sub == 'dashboard') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard</p>
+                  <p>Home</p>
                 </a>
               </li>
             </ul>
@@ -54,7 +54,7 @@
           <li class="nav-header">DSS</li>
           <li class="nav-item <?= ($page_master == 'ahp') ? 'menu-open' : '' ?>">
             <a href="#" class="nav-link <?= ($page_master == 'ahp') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-balance-scale"></i>
+              <i class="nav-icon fas fa-balance-scale" style="color: #DBC4F0"></i>
               <p>
                 AHP
                 <i class="right fas fa-angle-left"></i>
@@ -77,7 +77,7 @@
           </li>
           <li class="nav-item <?= ($page_master == 'saw') ? 'menu-open' : '' ?>">
             <a href="#" class="nav-link <?= ($page_master == 'saw') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-balance-scale"></i>
+              <i class="nav-icon fas fa-balance-scale" style="color: #FF6969"></i>
               <p>
                 SAW
                 <i class="right fas fa-angle-left"></i>
@@ -92,6 +92,29 @@
               </li>
               <li class="nav-item">
                 <a href="<?= base_url('projects/saw') ?>" class="nav-link <?= ($page_sub == 'saw-project') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Projects</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item <?= ($page_master == 'wp') ? 'menu-open' : '' ?>">
+            <a href="#" class="nav-link <?= ($page_master == 'wp') ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-balance-scale" style="color: #F9B572"></i>
+              <p>
+                WP
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= base_url('wp') ?>" class="nav-link <?= ($page_sub == 'wp-index') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Info</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('projects/wp') ?>" class="nav-link <?= ($page_sub == 'wp-project') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>My Projects</p>
                 </a>
