@@ -53,7 +53,7 @@ class SimpleAdditiveWeighting extends BaseController
         $name = $this->request->getPost('name');
         $c_b = $this->request->getPost('cost_benefit');
         $weight = (float) $this->request->getPost('weight');
-        if (!preg_match('/^[a-zA-Z0-9\s_.->=]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
@@ -152,7 +152,7 @@ class SimpleAdditiveWeighting extends BaseController
         d($this->request->getPost());
         
         $name = $this->request->getPost('name');
-        if (!preg_match('/^[a-zA-Z0-9\s_.->=]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
@@ -283,7 +283,7 @@ class SimpleAdditiveWeighting extends BaseController
 
         $name = $this->request->getPost('name');
         $weight = (float) $this->request->getPost('weight');
-        if (!preg_match('/^[a-zA-Z0-9\s_.->=]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('saw/' . $id_project . '/criteria'));

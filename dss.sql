@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2023 at 01:20 PM
+-- Generation Time: Nov 20, 2023 at 01:47 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -305,6 +305,23 @@ CREATE TABLE `wp_criteria` (
   `deleted_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_sub_criteria`
+--
+
+CREATE TABLE `wp_sub_criteria` (
+  `id` bigint NOT NULL,
+  `id_projects` int NOT NULL,
+  `id_wp_criteria` int NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `weight` float NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -419,6 +436,12 @@ ALTER TABLE `wp_criteria`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `wp_sub_criteria`
+--
+ALTER TABLE `wp_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -529,6 +552,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `wp_criteria`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `wp_sub_criteria`
+--
+ALTER TABLE `wp_sub_criteria`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

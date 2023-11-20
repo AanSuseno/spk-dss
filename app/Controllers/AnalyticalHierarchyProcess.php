@@ -57,7 +57,7 @@ class AnalyticalHierarchyProcess extends BaseController
         }
 
         $name = $this->request->getPost('name');
-        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('ahp/' . $id_project . '/criteria'));
@@ -365,7 +365,7 @@ class AnalyticalHierarchyProcess extends BaseController
         }
 
         $name = $this->request->getPost('name');
-        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('ahp/' . $id_project . '/sub_criteria'));
@@ -593,7 +593,7 @@ class AnalyticalHierarchyProcess extends BaseController
         }
 
         $name = $this->request->getPost('name');
-        if (!preg_match('/^[a-zA-Z0-9\s_-]{3,}$/', $name)) {
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
             session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('ahp/' . $id_project . '/criteria'));

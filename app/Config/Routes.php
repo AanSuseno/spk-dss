@@ -63,5 +63,8 @@ $routes->group('/wp', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/criteria', 'WeightedProduct::criteria/$1');
 	$routes->post('(:num)/criteria/create', 'WeightedProduct::criteria_create/$1');
 	$routes->post('(:num)/criteria/delete/(:num)', 'WeightedProduct::criteria_delete/$1/$2');
+	$routes->post('(:num)/sub_criteria/create/(:num)', 'WeightedProduct::sub_criteria_create/$1/$2');
+	$routes->get('(:num)/sub_criteria/(:num)', 'WeightedProduct::sub_criteria_json/$1/$2');
+	$routes->get('(:num)/sub_criteria/delete/(:num)', 'WeightedProduct::sub_criteria_delete/$1/$2');
 });
 
