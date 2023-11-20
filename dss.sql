@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2023 at 01:47 PM
+-- Generation Time: Nov 20, 2023 at 02:59 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -291,6 +291,37 @@ CREATE TABLE `users` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `wp_alternatives`
+--
+
+CREATE TABLE `wp_alternatives` (
+  `id` bigint NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_alternatives_sub_criteria`
+--
+
+CREATE TABLE `wp_alternatives_sub_criteria` (
+  `id` bigint NOT NULL,
+  `id_wp_alternatives` bigint NOT NULL,
+  `id_wp_sub_criteria` bigint NOT NULL,
+  `id_wp_criteria` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `wp_criteria`
 --
 
@@ -430,6 +461,18 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `wp_alternatives`
+--
+ALTER TABLE `wp_alternatives`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `wp_alternatives_sub_criteria`
+--
+ALTER TABLE `wp_alternatives_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `wp_criteria`
 --
 ALTER TABLE `wp_criteria`
@@ -546,6 +589,18 @@ ALTER TABLE `settings`
 --
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `wp_alternatives`
+--
+ALTER TABLE `wp_alternatives`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `wp_alternatives_sub_criteria`
+--
+ALTER TABLE `wp_alternatives_sub_criteria`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `wp_criteria`

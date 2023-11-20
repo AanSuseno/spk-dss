@@ -168,4 +168,106 @@ class WeightedProduct extends BaseController
         session()->setFlashdata('msg-type', 'success');
         return redirect()->to(base_url('wp/' . $id_project . '/criteria'));
     }
+
+    function alternatives($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+        $criteria = model('WpCriteria')->where(['id_projects' => $id_project])->find(); 
+        $alternatives = model('WpAlternatives')->where(['id_projects' => $id_project])->find();
+        $sc = [];
+        $sub_criteria = [];
+        $alternatives_weight = [];$total_criteria_weight = 0;
+        foreach ($criteria as $key => $c) {
+            $total_criteria_weight += $c['weight'];
+        }
+
+        foreach ($criteria as $key => $c) {
+            $sc[$c['id']] = model('WpSubCriteria')->where(['id_wp_criteria' => $c['id']])->find();
+        }
+
+        foreach ($sc as $key => $sc_c) {
+            foreach ($sc_c as $keyc => $sc_sub) {
+                $sub_criteria[$key][$sc_sub['id']] = $sc_sub;
+            }
+        }
+
+        foreach ($alternatives as $key => $a) {
+            foreach ($criteria as $keyc => $c) {
+                $alternatives_weight[$a['id']][$c['id']] = model('WpAlternativesSubCriteria')
+                ->select('sc.weight as weight, sc.name as name, sc.id as id')
+                ->join('wp_sub_criteria sc', 'sc.id = wp_alternatives_sub_criteria.id_wp_sub_criteria')
+                ->where([
+                    'wp_alternatives_sub_criteria.id_wp_alternatives' => $a['id'],
+                    'wp_alternatives_sub_criteria.id_wp_criteria' => $c['id'],
+                ])->first();
+            }
+        }
+
+        $data_view = [
+            'title' => $project->name . " - Simple Additive Weighting",
+            'id_project' => $id_project,
+            'page_master' => 'wp',
+            'page_sub' => 'wp-project',
+            'criteria' => $criteria,
+            'alternatives' => $alternatives,
+            'alternatives_weight' => $alternatives_weight,
+            'sub_criteria' => $sub_criteria,
+            'total_criteria_weight' => $total_criteria_weight,
+        ];
+        return view('dss/wp/alternatives', $data_view);
+    }
+
+    function alternatives_create($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+
+        d($this->request->getPost());
+        
+        $name = $this->request->getPost('name');
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('wp/' . $id_project . '/criteria'));
+        }
+
+        // insert alternatives
+        model('WpAlternatives')->insert([
+            'name' => $name,
+            'id_projects' => $id_project
+        ]);
+        $id_alternative = model('WpAlternatives')->insertID();
+
+        // insert alternatives criteria weight
+        foreach ($this->request->getPost('criteria') as $key => $c) {
+            model('WpAlternativesSubCriteria')->insert([
+                'id_wp_alternatives' => $id_alternative,
+                'id_wp_criteria' => $c,
+                'id_wp_sub_criteria' => $this->request->getPost('crit_'.$c)
+            ]);
+        }
+
+        session()->setFlashdata('msg', 'Successfully added a new alternative.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('wp/' . $id_project . '/alternatives'));
+    }
+
+    function alternatives_delete($id_project, $id_alternative) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $where = [
+            'id_projects' => $id_project,
+            'id' => $id_alternative
+        ];
+
+        model('WpAlternatives')->where($where)->delete();
+
+        session()->setFlashdata('msg', 'Successfully deleted a alternative.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('wp/' . $id_project . '/alternatives'));
+    }
 }

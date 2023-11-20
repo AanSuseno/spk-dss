@@ -28,6 +28,11 @@ $title = (isset($title)) ? $title : 'App';
   <!-- tippy -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://unpkg.com/tippy.js@6"></script>
+  <style>
+    td:hover, th:hover {
+      background: #CDF5FD;
+    }
+  </style>
 </head>
 <!--
 `body` tag options:
