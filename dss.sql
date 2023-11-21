@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2023 at 02:59 PM
+-- Generation Time: Nov 21, 2023 at 08:36 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -216,7 +216,7 @@ CREATE TABLE `saw_alternatives` (
 
 CREATE TABLE `saw_alternatives_criteria_weight` (
   `id` bigint NOT NULL,
-  `id_criteria` int NOT NULL,
+  `id_saw_criteria` int NOT NULL,
   `id_alternatives` bigint NOT NULL,
   `id_saw_sub_criteria` bigint NOT NULL,
   `created_at` datetime NOT NULL,
@@ -250,7 +250,7 @@ CREATE TABLE `saw_criteria` (
 CREATE TABLE `saw_sub_criteria` (
   `id` bigint NOT NULL,
   `id_projects` int NOT NULL,
-  `id_criteria` int NOT NULL,
+  `id_saw_criteria` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `weight` float NOT NULL,
   `created_at` datetime NOT NULL,
@@ -286,6 +286,21 @@ CREATE TABLE `users` (
   `deleted_at` datetime DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `picture` mediumblob
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_limit`
+--
+
+CREATE TABLE `users_limit` (
+  `id` int NOT NULL,
+  `id_users` int NOT NULL,
+  `project` int NOT NULL DEFAULT '5',
+  `criteria` int NOT NULL DEFAULT '25',
+  `alternatives` bigint NOT NULL DEFAULT '300',
+  `sub_criteria` bigint NOT NULL DEFAULT '125'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -461,6 +476,12 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `users_limit`
+--
+ALTER TABLE `users_limit`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `wp_alternatives`
 --
 ALTER TABLE `wp_alternatives`
@@ -588,6 +609,12 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users_limit`
+--
+ALTER TABLE `users_limit`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --

@@ -78,13 +78,13 @@ class SimpleAdditiveWeighting extends BaseController
         return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
     }
     
-    function criteria_delete($id_project, $id_criteria) {
+    function criteria_delete($id_project, $id_saw_criteria) {
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
         $where = [
             'id_projects' => $id_project,
-            'id' => $id_criteria
+            'id' => $id_saw_criteria
         ];
 
         model('SawCriteria')->where($where)->delete();
@@ -106,7 +106,7 @@ class SimpleAdditiveWeighting extends BaseController
         $alternatives_weight = [];
 
         foreach ($criteria as $key => $c) {
-            $sc[$c['id']] = model('SawSubCriteria')->where(['id_criteria' => $c['id']])->find();
+            $sc[$c['id']] = model('SawSubCriteria')->where(['id_saw_criteria' => $c['id']])->find();
         }
 
         foreach ($sc as $key => $sc_c) {
@@ -122,7 +122,7 @@ class SimpleAdditiveWeighting extends BaseController
                 ->join('saw_sub_criteria sc', 'sc.id = saw_alternatives_criteria_weight.id_saw_sub_criteria')
                 ->where([
                     'saw_alternatives_criteria_weight.id_alternatives' => $a['id'],
-                    'saw_alternatives_criteria_weight.id_criteria' => $c['id'],
+                    'saw_alternatives_criteria_weight.id_saw_criteria' => $c['id'],
                 ])->first();
             }
         }
@@ -169,7 +169,7 @@ class SimpleAdditiveWeighting extends BaseController
         foreach ($this->request->getPost('criteria') as $key => $c) {
             model('SawAlternativesCriteriaWeight')->insert([
                 'id_alternatives' => $id_alternative,
-                'id_criteria' => $c,
+                'id_saw_criteria' => $c,
                 'id_saw_sub_criteria' => $this->request->getPost('crit_'.$c)
             ]);
         }
@@ -208,7 +208,7 @@ class SimpleAdditiveWeighting extends BaseController
         $alternatives_weight = [];
 
         foreach ($criteria as $key => $c) {
-            $sc[$c['id']] = model('SawSubCriteria')->where(['id_criteria' => $c['id']])->find();
+            $sc[$c['id']] = model('SawSubCriteria')->where(['id_saw_criteria' => $c['id']])->find();
         }
 
         foreach ($sc as $key => $sc_c) {
@@ -229,7 +229,7 @@ class SimpleAdditiveWeighting extends BaseController
                 ->join('saw_sub_criteria sc', 'sc.id = saw_alternatives_criteria_weight.id_saw_sub_criteria')
                 ->where([
                     'saw_alternatives_criteria_weight.id_alternatives' => $a['id'],
-                    'saw_alternatives_criteria_weight.id_criteria' => $c['id'],
+                    'saw_alternatives_criteria_weight.id_saw_criteria' => $c['id'],
                 ])->first();
             }
         }
@@ -261,7 +261,7 @@ class SimpleAdditiveWeighting extends BaseController
         return true;
     }
 
-    function sub_criteria_json($id_project, $id_criteria) {
+    function sub_criteria_json($id_project, $id_saw_criteria) {
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
@@ -270,13 +270,13 @@ class SimpleAdditiveWeighting extends BaseController
             ->select('name, id, weight')
             ->where([
                 'id_projects' => $id_project,
-                'id_criteria' => $id_criteria
+                'id_saw_criteria' => $id_saw_criteria
             ])->find();
 
         return json_encode(['sub_criteria' => $sub_criteria]);
     }
 
-    function sub_criteria_create($id_project, $id_criteria) {
+    function sub_criteria_create($id_project, $id_saw_criteria) {
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
@@ -291,7 +291,7 @@ class SimpleAdditiveWeighting extends BaseController
 
         $data_insert = [
             'id_projects' => $id_project,
-            'id_criteria' => $id_criteria,
+            'id_saw_criteria' => $id_saw_criteria,
             'name' => $name,
             'weight' => $weight
         ];

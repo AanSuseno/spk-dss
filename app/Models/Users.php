@@ -51,6 +51,7 @@ class Users extends Model
                 'status' => 'aktif'
             ]);
             $user['id'] = $this->insertId();
+            model('UsersLimit')->insert(['id_users' => $user['id']]);
         } else {
             if ($user['status'] != 'aktif') return $user['status'];
 

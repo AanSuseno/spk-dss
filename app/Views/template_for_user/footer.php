@@ -27,6 +27,8 @@
 <script src="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- ChartJS -->
+<script src="<?= base_url("assets/AdminLTE-3.2.0/") ?>plugins/chart.js/Chart.min.js"></script>
 
 <script>
   $(document).ready(() => {

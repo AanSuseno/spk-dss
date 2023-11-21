@@ -308,6 +308,8 @@ class AnalyticalHierarchyProcess extends BaseController
             $sub_criteria[$c['id']] = $modelSubCriteria->where(['id_ahp_criteria' => $c['id']])->find();
         }
 
+        dd($alternatives);
+
         $data_view = [
             'title' => $project->name . " - Analytical Hierarchy Process",
             'id_project' => $id_project,

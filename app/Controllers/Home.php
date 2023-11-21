@@ -72,10 +72,28 @@ class Home extends BaseController
 	}
 
 	function dashboard_user() {
+		$arr_total_sub_criteria = [
+			'ahp' => model('UsersLimit')->total_sub_criteria_1_dss('ahp'),
+			'saw' => model('UsersLimit')->total_sub_criteria_1_dss('saw'),
+			'wp' => model('UsersLimit')->total_sub_criteria_1_dss('wp'),
+		];
+
 		$data_view = [
             'title' => 'Dashboard User',
             'page_master' => 'dashboard',
-            'page_sub' => 'dashboard'
+            'page_sub' => 'dashboard',
+            'total_projects' => model('UsersLimit')->arr_total_projects(),
+            'arr_total_criteria' => model('UsersLimit')->arr_total_criteria(),
+            'arr_total_sub_criteria' => $arr_total_sub_criteria,
+            'arr_total_alternatives' => model('UsersLimit')->arr_total_alternatives(),
+			'max_project' => model('UsersLimit')->max_project(),
+			'max_criteria' => model('UsersLimit')->max_criteria(),
+			'max_sub_criteria' => model('UsersLimit')->max_sub_criteria(),
+			'max_alternatives' => model('UsersLimit')->max_alternatives(),
+			'total_project' => model('UsersLimit')->total_project(),
+			'total_criteria' => model('UsersLimit')->total_criteria(),
+			'total_sub_criteria' => model('UsersLimit')->total_sub_criteria(),
+			'total_alternatives' => model('UsersLimit')->total_alternatives(),
         ];
         return view('user_dashboard', $data_view);
 	}
