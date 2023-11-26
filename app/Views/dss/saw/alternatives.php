@@ -112,13 +112,16 @@
                         <hr>
                         <input type="hidden" name="criteria[]" value="<?= $c['id'] ?>">
                         <label for=""><?= $c['name'] ?></label>
-                        <?php foreach ($sub_criteria[$c['id']] as $key_sc => $sc) { ?>
-                            <div class="form-check">
-                                <input class="form-check-input" required="required" type="radio" value="<?= $sc['id'] ?>" name="crit_<?= $c['id'] ?>" id="crit_edit_<?= $sc['id'] ?>">
-                                <label class="form-check-label" for="crit_edit_<?= $sc['id'] ?>">
-                                    <?= $sc['name'] ?>
-                                </label>
-                            </div>
+                        <?php 
+                        if (isset($sub_criteria[$c['id']])) {
+                            foreach ($sub_criteria[$c['id']] as $key_sc => $sc) { ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" required="required" type="radio" value="<?= $sc['id'] ?>" name="crit_<?= $c['id'] ?>" id="crit_edit_<?= $sc['id'] ?>">
+                                    <label class="form-check-label" for="crit_edit_<?= $sc['id'] ?>">
+                                        <?= $sc['name'] ?>
+                                    </label>
+                                </div>
+                            <?php } ?>
                         <?php } ?>
                     <?php } ?>
                 </div>

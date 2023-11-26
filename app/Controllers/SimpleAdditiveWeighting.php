@@ -115,6 +115,7 @@ class SimpleAdditiveWeighting extends BaseController
             $sc[$c['id']] = model('SawSubCriteria')->where(['id_saw_criteria' => $c['id']])->find();
         }
 
+
         foreach ($sc as $key => $sc_c) {
             foreach ($sc_c as $keyc => $sc_sub) {
                 $sub_criteria[$key][$sc_sub['id']] = $sc_sub;
