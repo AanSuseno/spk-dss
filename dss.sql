@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 21, 2023 at 08:36 AM
+-- Generation Time: Nov 26, 2023 at 07:30 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -187,7 +187,7 @@ CREATE TABLE `projects` (
   `id` int NOT NULL,
   `id_users` int NOT NULL,
   `name` varchar(255) NOT NULL,
-  `dss` enum('ahp','saw','wp') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `dss` enum('ahp','saw','wp','topsis') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL
@@ -269,6 +269,40 @@ CREATE TABLE `settings` (
   `google_client_id` varchar(255) NOT NULL,
   `google_client_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `google_client_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `topsis_criteria`
+--
+
+CREATE TABLE `topsis_criteria` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `weight` int NOT NULL,
+  `cost_benefit` enum('cost','benefit') NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `topsis_sub_criteria`
+--
+
+CREATE TABLE `topsis_sub_criteria` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `id_topsis_criteria` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `weight` int NOT NULL,
+  `created_at` int NOT NULL,
+  `updated_at` int NOT NULL,
+  `deleted_at` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -469,6 +503,18 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `topsis_criteria`
+--
+ALTER TABLE `topsis_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `topsis_sub_criteria`
+--
+ALTER TABLE `topsis_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -603,6 +649,18 @@ ALTER TABLE `saw_sub_criteria`
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `topsis_criteria`
+--
+ALTER TABLE `topsis_criteria`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `topsis_sub_criteria`
+--
+ALTER TABLE `topsis_sub_criteria`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --

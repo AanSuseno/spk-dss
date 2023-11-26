@@ -121,6 +121,29 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item <?= ($page_master == 'topsis') ? 'menu-open' : '' ?>">
+            <a href="#" class="nav-link <?= ($page_master == 'wp') ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-balance-scale" style="color: #C683D7"></i>
+              <p>
+                Topsis
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= base_url('topsis') ?>" class="nav-link <?= ($page_sub == 'topsis-index') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Info</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('projects/topsis') ?>" class="nav-link <?= ($page_sub == 'topsis-project') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Projects</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
