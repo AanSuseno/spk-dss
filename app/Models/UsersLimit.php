@@ -251,4 +251,14 @@ class UsersLimit extends Model
 
         return true;
     }
+
+    function canCreateNewAlternative($id_users = -1) {
+        $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
+
+        if ($this->total_alternatives() >= $this->max_alternatives()) {
+            return false;
+        }
+
+        return true;
+    }
 }

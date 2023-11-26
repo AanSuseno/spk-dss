@@ -237,7 +237,11 @@ class WeightedProduct extends BaseController
         }
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
 
-        d($this->request->getPost());
+        if (!model('UsersLimit')->canCreateNewAlternative()) {
+            session()->setFlashdata('msg', "You have reached the maximum alternative limit.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('wp/' . $id_project . '/sub_criteria'));
+        }
         
         $name = $this->request->getPost('name');
         if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
