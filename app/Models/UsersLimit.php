@@ -241,4 +241,14 @@ class UsersLimit extends Model
 
         return true;
     }
+
+    function canCreateNewSubCriteria($id_users = -1) {
+        $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
+
+        if ($this->total_sub_criteria() >= $this->max_sub_criteria()) {
+            return false;
+        }
+
+        return true;
+    }
 }

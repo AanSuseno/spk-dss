@@ -287,6 +287,12 @@ class SimpleAdditiveWeighting extends BaseController
             return redirect()->to(base_url('/dashboard'));
         }
 
+        if (!model('UsersLimit')->canCreateNewSubCriteria()) {
+            session()->setFlashdata('msg', "You have reached the maximum sub criteria limit.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('saw/' . $id_project . '/sub_criteria'));
+        }
+
         $name = $this->request->getPost('name');
         $weight = (float) $this->request->getPost('weight');
         if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
