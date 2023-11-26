@@ -73,7 +73,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('projects/delete/ahp') ?>" id="form-delete" method="post">
+            <form action="<?= base_url('projects/delete/'.$dss) ?>" id="form-delete" method="post">
                 <div class="modal-body">
                     <p>Are you sure you want to permanently delete this project?</p>
                 </div>
@@ -91,7 +91,7 @@
 <?= $this->section('js') ?>
 <script>
     function deleteProjectModal(id) {
-        $('#form-delete').attr('action', '<?= base_url('projects/delete/ahp') ?>/'+id)
+        $('#form-delete').attr('action', '<?= base_url('projects/delete/'.$dss) ?>/'+id)
     }
 </script>
 <?= $this->endSection() ?>

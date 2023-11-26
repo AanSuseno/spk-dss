@@ -30,8 +30,7 @@ class Projects extends BaseController
             return redirect()->to(base_url('projects/'.$dss));
         }
 
-        $total_projects = model('Projects')->where('id_users', session()->get('id'))->countAllResults();
-        if ($total_projects >= 5) {
+        if (!model('UsersLimit')->canCreateNewProject()) {
             session()->setFlashdata('msg', '"You have reached the maximum limit of projects. You can either delete older projects or create a new account to start a new project.');
             session()->setFlashdata('msg-type', 'warning');
             return redirect()->to(base_url('projects/'.$dss));

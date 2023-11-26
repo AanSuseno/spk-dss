@@ -50,6 +50,12 @@ class SimpleAdditiveWeighting extends BaseController
             return redirect()->to(base_url('/dashboard'));
         }
 
+        if(!model('UsersLimit')->canCreateNewCriteria()) {
+            session()->setFlashdata('msg', "You have reached the maximum criteria limit.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('saw/' . $id_project . '/criteria'));
+        }
+
         $name = $this->request->getPost('name');
         $c_b = $this->request->getPost('cost_benefit');
         $weight = (float) $this->request->getPost('weight');

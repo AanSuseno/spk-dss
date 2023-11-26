@@ -221,4 +221,24 @@ class UsersLimit extends Model
 
         return $total;
     }
+
+    function canCreateNewProject($id_users = -1) {
+        $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
+
+        if ($this->total_project() >= $this->max_project()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function canCreateNewCriteria($id_users = -1) {
+        $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
+
+        if ($this->total_criteria() >= $this->max_criteria()) {
+            return false;
+        }
+
+        return true;
+    }
 }

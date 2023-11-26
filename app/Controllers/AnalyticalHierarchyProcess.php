@@ -50,6 +50,12 @@ class AnalyticalHierarchyProcess extends BaseController
             ->orderBy('criteria_count', 'DESC')
             ->first()['criteria_count'];
 
+        if(!model('UsersLimit')->canCreateNewCriteria()) {
+            session()->setFlashdata('msg', "You have reached the maximum criteria limit.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('ahp/' . $id_project . '/criteria'));
+        }
+
         if ($total_criteria >= $highest_random_index) {
             session()->setFlashdata('msg', "The number of criteria must not exceed the total number of random indexes ($highest_random_index).");
             session()->setFlashdata('msg-type', 'warning');
