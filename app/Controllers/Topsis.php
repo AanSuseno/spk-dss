@@ -225,4 +225,44 @@ class Topsis extends BaseController
 
         return true;
     }
+
+    function alternatives_create($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+
+        if (!model('UsersLimit')->canCreateNewAlternative()) {
+            session()->setFlashdata('msg', "You have reached the maximum alternative limit.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('topsis/' . $id_project . '/sub_criteria'));
+        }
+        
+        $name = $this->request->getPost('name');
+        if (!preg_match('/^[a-zA-Z0-9\s_.->=-]{3,}$/', $name)) {
+            session()->setFlashdata('msg', "Illegal characters. Only letters, numbers, spaces, and hyphens are allowed. With atleast have 3 characters.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('topsis/' . $id_project . '/criteria'));
+        }
+
+        // insert alternatives
+        model('TopsisAlternatives')->insert([
+            'name' => $name,
+            'id_projects' => $id_project
+        ]);
+        $id_alternative = model('TopsisAlternatives')->insertID();
+
+        // insert alternatives criteria weight
+        foreach ($this->request->getPost('criteria') as $key => $c) {
+            model('TopsisAlternativesSubCriteria')->insert([
+                'id_topsis_alternatives' => $id_alternative,
+                'id_topsis_criteria' => $c,
+                'id_topsis_sub_criteria' => $this->request->getPost('crit_'.$c)
+            ]);
+        }
+
+        session()->setFlashdata('msg', 'Successfully added a new alternative.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('topsis/' . $id_project . '/alternatives'));
+    }
 }

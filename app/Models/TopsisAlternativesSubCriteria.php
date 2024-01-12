@@ -4,13 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TopsisAlternatives extends Model
+class WpAlternativesSubCriteria extends Model
 {
-    protected $table            = 'topsis_alternatives';
+    protected $table            = 'topsis_alternatives_sub_criteria';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = false;
     protected $allowedFields    = [];
 
