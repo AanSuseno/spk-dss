@@ -122,7 +122,7 @@
             </ul>
           </li>
           <li class="nav-item <?= ($page_master == 'topsis') ? 'menu-open' : '' ?>">
-            <a href="#" class="nav-link <?= ($page_master == 'wp') ? 'active' : '' ?>">
+            <a href="#" class="nav-link <?= ($page_master == 'topsis') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-balance-scale" style="color: #C683D7"></i>
               <p>
                 Topsis

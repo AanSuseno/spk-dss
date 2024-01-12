@@ -148,6 +148,71 @@ class Topsis extends BaseController
         return json_encode(['sub_criteria' => $sub_criteria]);
     }
 
+    function sub_criteria_delete($id_project, $id_sub_criteria) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+
+        model('TopsisSubCriteria')->where([
+            'id_projects' => $id_project,
+            'id' => $id_sub_criteria
+        ])->delete();
+
+        session()->setFlashdata('msg', 'Successfully deleted a sub criteria.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('topsis/' . $id_project . '/criteria'));
+    }
+
+    function alternatives($id_project) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
+        $criteria = model('TopsisCriteria')->where(['id_projects' => $id_project])->find(); 
+        $alternatives = model('TopsisAlternatives')->where(['id_projects' => $id_project])->find();
+        $sc = [];
+        $sub_criteria = [];
+        $alternatives_weight = [];$total_criteria_weight = 0;
+        foreach ($criteria as $key => $c) {
+            $total_criteria_weight += $c['weight'];
+        }
+
+        foreach ($criteria as $key => $c) {
+            $sc[$c['id']] = model('TopsisSubCriteria')->where(['id_topsis_criteria' => $c['id']])->find();
+        }
+
+        foreach ($sc as $key => $sc_c) {
+            foreach ($sc_c as $keyc => $sc_sub) {
+                $sub_criteria[$key][$sc_sub['id']] = $sc_sub;
+            }
+        }
+
+        foreach ($alternatives as $key => $a) {
+            foreach ($criteria as $keyc => $c) {
+                $alternatives_weight[$a['id']][$c['id']] = model('TopsisAlternativesSubCriteria')
+                ->select('sc.weight as weight, sc.name as name, sc.id as id')
+                ->join('topsis_sub_criteria sc', 'sc.id = topsis_alternatives_sub_criteria.id_topsis_sub_criteria')
+                ->where([
+                    'topsis_alternatives_sub_criteria.id_topsis_alternatives' => $a['id'],
+                    'topsis_alternatives_sub_criteria.id_topsis_criteria' => $c['id'],
+                ])->first();
+            }
+        }
+
+        $data_view = [
+            'title' => $project->name . " - Technique for Order of Preference by Similarity to Ideal Solution",
+            'id_project' => $id_project,
+            'page_master' => 'topsis',
+            'page_sub' => 'topsis-project',
+            'criteria' => $criteria,
+            'alternatives' => $alternatives,
+            'alternatives_weight' => $alternatives_weight,
+            'sub_criteria' => $sub_criteria,
+            'total_criteria_weight' => $total_criteria_weight,
+        ];
+        return view('dss/topsis/alternatives', $data_view);
+    }
+
     function validate_project_access($id_project) {
         $hitung = model('Projects')->where([
             'id' => $id_project,

@@ -126,6 +126,7 @@
                         <tr>
                             <th>No.</th>
                             <th>Name</th>
+                            <th>Weight</th>
                             <th>Action</th>
                         </tr>
                     </thead>
