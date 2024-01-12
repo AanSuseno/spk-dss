@@ -265,4 +265,20 @@ class Topsis extends BaseController
         session()->setFlashdata('msg-type', 'success');
         return redirect()->to(base_url('topsis/' . $id_project . '/alternatives'));
     }
+
+    function alternatives_delete($id_project, $id_alternative) {
+        if(!$this->validate_project_access($id_project)) {
+            return redirect()->to(base_url('/dashboard'));
+        }
+        $where = [
+            'id_projects' => $id_project,
+            'id' => $id_alternative
+        ];
+
+        model('TopsisAlternatives')->where($where)->delete();
+
+        session()->setFlashdata('msg', 'Successfully deleted a alternative.');
+        session()->setFlashdata('msg-type', 'success');
+        return redirect()->to(base_url('topsis/' . $id_project . '/alternatives'));
+    }
 }
