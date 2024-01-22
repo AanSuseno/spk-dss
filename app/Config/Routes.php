@@ -85,5 +85,7 @@ $routes->group('/topsis', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/alternatives', 'Topsis::alternatives/$1');
 	$routes->post('(:num)/alternatives/create', 'Topsis::alternatives_create/$1');
 	$routes->post('(:num)/alternatives/delete/(:num)', 'Topsis::alternatives_delete/$1/$2');
+	$routes->get('(:num)/normalized', 'Topsis::alternatives/$1/normalized');
+	$routes->get('(:num)/normalized-weight', 'Topsis::alternatives/$1/normalized_weight');
 });
 

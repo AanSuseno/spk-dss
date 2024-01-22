@@ -163,7 +163,7 @@ class Topsis extends BaseController
         return redirect()->to(base_url('topsis/' . $id_project . '/criteria'));
     }
 
-    function alternatives($id_project) {
+    function alternatives($id_project, $page = 'alternatives') {
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
@@ -210,7 +210,14 @@ class Topsis extends BaseController
             'sub_criteria' => $sub_criteria,
             'total_criteria_weight' => $total_criteria_weight,
         ];
-        return view('dss/topsis/alternatives', $data_view);
+
+        if ($page == 'alternatives') {
+            return view('dss/topsis/alternatives', $data_view);
+        } else if ($page == 'normalized') {
+            return $this->normalized($data_view);
+        } else if ($page == 'normalized_weight') {
+            return $this->normalized_weight($data_view);
+        }
     }
 
     function validate_project_access($id_project) {
@@ -280,5 +287,47 @@ class Topsis extends BaseController
         session()->setFlashdata('msg', 'Successfully deleted a alternative.');
         session()->setFlashdata('msg-type', 'success');
         return redirect()->to(base_url('topsis/' . $id_project . '/alternatives'));
+    }
+
+    function normalized($data_view) {
+        $arr_sum_weight_squared = [];
+        $arr_sum_weight_squared_text = [];
+        foreach ($data_view['alternatives'] as $key => $a) :
+            foreach ($data_view['criteria'] as $key_c => $c) {
+                if ($key == 0) {
+                    $arr_sum_weight_squared[$c['id']] = $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'] ** 2;
+                    $arr_sum_weight_squared_text[$c['id']] = '√('.$data_view['alternatives_weight'][$a['id']][$c['id']]['weight'].'^2 + ';
+                } else {
+                    $arr_sum_weight_squared[$c['id']] += $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'] ** 2;
+                    $arr_sum_weight_squared_text[$c['id']] .= $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'].'^2 + ';
+                }
+            }
+        endforeach;
+        $data_view['arr_sum_weight_squared'] = $arr_sum_weight_squared;
+        $data_view['arr_sum_weight_squared_text'] = $arr_sum_weight_squared_text;
+
+        return view('dss/topsis/normalized', $data_view);
+    }
+
+    function normalized_weight($data_view) {
+        $arr_sum_weight_squared = [];
+        foreach ($data_view['alternatives'] as $key => $a) :
+            foreach ($data_view['criteria'] as $key_c => $c) {
+                if ($key == 0) {
+                    $arr_sum_weight_squared[$c['id']] = $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'] ** 2;
+                } else {
+                    $arr_sum_weight_squared[$c['id']] += $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'] ** 2;
+                }
+            }
+        endforeach;
+        $data_view['arr_sum_weight_squared'] = $arr_sum_weight_squared;
+
+        foreach ($data_view['alternatives'] as $key => $a) :
+            foreach ($data_view['criteria'] as $key_c => $c) {
+                $data_view['normalized'][$a['id']][$c['id']] = $data_view['alternatives_weight'][$a['id']][$c['id']]['weight']/sqrt($arr_sum_weight_squared[$c['id']]);
+            }
+        endforeach;
+
+        return view('dss/topsis/normalized_weight', $data_view);
     }
 }

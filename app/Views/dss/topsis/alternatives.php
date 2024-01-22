@@ -6,10 +6,11 @@
         <!-- Custom Tabs -->
         <div class="card">
             <div class="card-header d-flex p-0">
-            <h3 class="card-title p-3">Alternatives, Vector, and Ranking</h3>
+            <h3 class="card-title p-3">Alternatives</h3>
             <ul class="nav nav-pills ml-auto p-2">
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("topsis/$id_project/criteria") ?>">Step 1 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link active" href="<?= base_url("topsis/$id_project/alternatives") ?>">Step 2</i></a></li>
+                <li class="nav-item"><a class="nav-link active" href="<?= base_url("topsis/$id_project/alternatives") ?>">Step 2 <i class="fa fa-arrow-right"></i></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url("topsis/$id_project/normalized") ?>">Step 3 <i class="fa fa-arrow-right"></i></a></li>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
@@ -28,9 +29,6 @@
                                         <?php foreach ($criteria as $key => $c) { ?>
                                             <th id="tippy-header-criteria-<?= $c['id'] ?>">C<?= $key+1 ?></th>
                                         <?php } ?>
-                                        <th rowspan="2">Vector S</th>
-                                        <th rowspan="2">Vector V</th>
-                                        <th rowspan="2" class="bg-success">Ranking</th>
                                         <th rowspan="2">Action</th>
                                     </tr>
                                     <tr>
@@ -41,10 +39,6 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $arr_min_max = [];
-                                    $total_vector_s = 0;
-                                    $arr_vector_s = [];
-                                    $str_total_vector_s = "";
                                     foreach ($alternatives as $key => $a) : ?>
                                         <tr>
                                             <td><?= $key + 1 ?></td>
@@ -53,10 +47,10 @@
                                             $vector_s = 1;
                                             $str_vector_s = "";
                                             foreach ($criteria as $key_c => $c) {
-                                            $arr_min_max[$c['id']][] = $alternatives_weight[$a['id']][$c['id']]['weight'];
-                                            $exponent = ($c['cost_benefit'] == 'benefit') ? $c['weight']/$total_criteria_weight : -1 * ($c['weight']/$total_criteria_weight);
-                                            $vector_s *= $alternatives_weight[$a['id']][$c['id']]['weight'] ** $exponent;
-                                            $str_vector_s .= "(" . $alternatives_weight[$a['id']][$c['id']]['weight'] . "^" . number_format($exponent, 2, ".", ",") . ")";
+                                                $arr_min_max[$c['id']][] = $alternatives_weight[$a['id']][$c['id']]['weight'];
+                                                $exponent = ($c['cost_benefit'] == 'benefit') ? $c['weight']/$total_criteria_weight : -1 * ($c['weight']/$total_criteria_weight);
+                                                $vector_s *= $alternatives_weight[$a['id']][$c['id']]['weight'] ** $exponent;
+                                                $str_vector_s .= "(" . $alternatives_weight[$a['id']][$c['id']]['weight'] . "^" . number_format($exponent, 2, ".", ",") . ")";
                                             ?>
                                                 <td
                                                 class="tippy-me"
@@ -65,13 +59,7 @@
                                                 </td>
                                             <?php
                                             }
-                                            $total_vector_s += $vector_s;
-                                            $arr_vector_s[$a['id']] = $vector_s;
-                                            $str_total_vector_s .= number_format($vector_s, 2, ".", ",") . " + ";
                                             ?>
-                                            <td class="tippy-me" data-tippy-content="<?= $str_vector_s ?>"><?= number_format($vector_s, 2, ".", ",") ?></td>
-                                            <td id="vector_v-<?= $a['id'] ?>"></td>
-                                            <td id="rank-<?= $a['id'] ?>" class="bg-success"></td>
                                             <td>
                                                 <button
                                                 class="btn btn-danger btn-sm"
@@ -84,17 +72,8 @@
                                         </tr>
                                     <?php endforeach;?>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="2">Total</th>
-                                        <th colspan="<?= count($criteria) ?>"></th>
-                                        <th class="tippy-me" data-tippy-content="<?= rtrim($str_total_vector_s, ' + '); ?>"><?= number_format($total_vector_s, 2, ".", ",") ?></th>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
-                        <?php arsort($arr_vector_s); $total_key = array_keys($arr_vector_s); ?>
                     </div>
                     <!-- /.tab-pane -->
                 </div>
@@ -189,17 +168,6 @@
     }
 
     $(document).ready(() => {
-        <?php foreach ($arr_vector_s as $key => $vector_s) { ?>
-            $('#vector_v-<?= $key ?>').text('<?= number_format($vector_s/$total_vector_s, 2, ".", ",") ?>')
-        <?php } ?>
-
-        <?php
-            foreach ($total_key as $key => $t) {
-                $rank = $key + 1;
-                echo "\$('#rank-{$t}').text('{$rank}');";
-            }
-        ?>
-
         $('#table-result').DataTable()
     })
 </script>
