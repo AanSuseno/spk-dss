@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 26, 2023 at 07:30 AM
+-- Generation Time: Jan 23, 2024 at 04:07 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -129,6 +129,38 @@ CREATE TABLE `ahp_random_index` (
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `ahp_random_index`
+--
+
+INSERT INTO `ahp_random_index` (`id`, `criteria_count`, `value`, `id_projects`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 0, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(2, 2, 0, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(3, 3, 0.58, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(4, 4, 0.9, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(5, 5, 1.12, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(6, 6, 1.24, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(7, 7, 1.32, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(8, 8, 1.41, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(9, 9, 1.45, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(10, 10, 1.49, 0, '2023-11-17 15:09:07', '2023-11-17 15:09:07', '2023-11-17 15:09:07'),
+(11, 3, 0.58, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(12, 4, 0.9, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(13, 5, 1.12, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(14, 6, 1.24, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(15, 7, 1.32, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(16, 8, 1.41, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(17, 9, 1.45, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(18, 10, 1.49, 12, '2023-11-17 08:39:25', '2023-11-17 08:39:25', '2023-11-17 15:39:25'),
+(19, 3, 0.55, 13, '2023-11-17 08:47:00', '2023-11-17 12:37:21', '2023-11-17 15:47:00'),
+(20, 4, 0.9, 13, '2023-11-17 08:47:00', '2023-11-17 08:47:00', '2023-11-17 15:47:00'),
+(21, 5, 1.12, 13, '2023-11-17 08:47:00', '2023-11-17 08:47:00', '2023-11-17 15:47:00'),
+(22, 6, 1.24, 13, '2023-11-17 08:47:00', '2023-11-17 08:47:00', '2023-11-17 15:47:00'),
+(23, 7, 1.32, 13, '2023-11-17 08:47:00', '2023-11-17 08:47:00', '2023-11-17 15:47:00'),
+(24, 8, 1.41, 13, '2023-11-17 08:47:00', '2023-11-17 08:47:00', '2023-11-17 15:47:00'),
+(25, 9, 1.45, 13, '2023-11-17 08:47:00', '2023-11-17 08:47:00', '2023-11-17 15:47:00'),
+(26, 10, 1.49, 13, '2023-11-17 08:47:00', '2023-11-17 08:47:00', '2023-11-17 15:47:00');
 
 -- --------------------------------------------------------
 
@@ -269,6 +301,37 @@ CREATE TABLE `settings` (
   `google_client_id` varchar(255) NOT NULL,
   `google_client_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `google_client_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `topsis_alternatives`
+--
+
+CREATE TABLE `topsis_alternatives` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `topsis_alternatives_sub_criteria`
+--
+
+CREATE TABLE `topsis_alternatives_sub_criteria` (
+  `id` bigint NOT NULL,
+  `id_topsis_alternatives` bigint NOT NULL,
+  `id_topsis_sub_criteria` bigint NOT NULL,
+  `id_topsis_criteria` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -503,6 +566,18 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `topsis_alternatives`
+--
+ALTER TABLE `topsis_alternatives`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `topsis_alternatives_sub_criteria`
+--
+ALTER TABLE `topsis_alternatives_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `topsis_criteria`
 --
 ALTER TABLE `topsis_criteria`
@@ -595,7 +670,7 @@ ALTER TABLE `ahp_criteria_weights_total`
 -- AUTO_INCREMENT for table `ahp_random_index`
 --
 ALTER TABLE `ahp_random_index`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `ahp_sub_criteria`
@@ -650,6 +725,18 @@ ALTER TABLE `saw_sub_criteria`
 --
 ALTER TABLE `settings`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `topsis_alternatives`
+--
+ALTER TABLE `topsis_alternatives`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `topsis_alternatives_sub_criteria`
+--
+ALTER TABLE `topsis_alternatives_sub_criteria`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `topsis_criteria`
