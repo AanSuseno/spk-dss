@@ -218,7 +218,9 @@ class Topsis extends BaseController
         } else if ($page == 'normalized_weight') {
             return $this->normalized_weight($data_view);
         } else if ($page == 'ideal_solutions') {
-            return $this->normalized_weight($data_view, 'ideal_solutions');
+            return $this->normalized_weight($data_view, $page);
+        } else if ($page == 'preference_score') {
+            return $this->normalized_weight($data_view, $page);
         }
     }
 
@@ -332,12 +334,14 @@ class Topsis extends BaseController
 
         if ($next_function == 'ideal_solutions') {
             return $this->ideal_solutions($data_view);
+        } else if($next_function == 'preference_score') {
+            return $this->ideal_solutions($data_view, $next_function);
         }
 
         return view('dss/topsis/normalized_weight', $data_view);
     }
 
-    function ideal_solutions($data_view) {
+    function ideal_solutions($data_view, $next_function = '') {
         $arr_normalized_weight = [];
         $alternatives = $data_view['alternatives'];
         $alternatives_weight = $data_view['alternatives_weight'];
@@ -391,6 +395,38 @@ class Topsis extends BaseController
         $data_view['d_plus_before_root_str'] = $d_plus_before_root_str;
         $data_view['d_min_before_root_str'] = $d_min_before_root_str;
 
+        if($next_function == 'preference_score') {
+            return $this->preference_score($data_view);
+        }
+
         return view('dss/topsis/ideal_solutions', $data_view); 
+    }
+
+    function preference_score($data_view) {
+        $alternatives = $data_view['alternatives'];
+        $d_plus_before_root = $data_view['d_plus_before_root'];
+        $d_min_before_root = $data_view['d_min_before_root'];
+
+        $preference = [];
+        $preference_str = [];
+        foreach ($alternatives as $key => $a) {
+            $preference[$a['id']] = sqrt($d_min_before_root[$a['id']]) / (sqrt($d_min_before_root[$a['id']]) + sqrt($d_plus_before_root[$a['id']]));
+            $preference_str[$a['id']] = number_format(sqrt($d_min_before_root[$a['id']]), 2) . "/" . "(" . number_format(sqrt($d_min_before_root[$a['id']]), 2) . "+" . number_format(sqrt($d_plus_before_root[$a['id']]), 2) . ")";
+        }
+
+        arsort($preference);
+
+        $ranking = [];
+        $rank = 0;
+        foreach ($preference as $key => $value) {
+            $rank ++;
+            $ranking[$key] = $rank;
+        }
+
+        $data_view['preference'] = $preference; 
+        $data_view['preference_str'] = $preference_str; 
+        $data_view['ranking'] = $ranking; 
+
+        return view('dss/topsis/preference_score', $data_view);
     }
 }

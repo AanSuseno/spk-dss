@@ -26,16 +26,16 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Alternative</th>
-                                        <th>D +</th>
-                                        <th>D -</th>
+                                        <th>Preference (V)</th>
+                                        <th>Rangking</th>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($alternatives as $key => $a) : ?>
                                         <tr>
                                             <td><?= $key+1 ?></td>
                                             <td> <?= $a['name'] ?></td>
-                                            <td class="tippy-me" data-tippy-content="<?= $d_plus_before_root_str[$a['id']] ?>"><?= number_format(sqrt($d_plus_before_root[$a['id']]), 2, '.', ',') ?></td>
-                                            <td class="tippy-me" data-tippy-content="<?= $d_min_before_root_str[$a['id']] ?>"><?= number_format(sqrt($d_min_before_root[$a['id']]), 2, '.', ',') ?></td>
+                                            <td class="tippy-me" data-tippy-content="<?= $preference_str[$a['id']] ?>"><?= number_format($preference[$a['id']], 2) ?></td>
+                                            <td class="tippy-me" ><?= $ranking[$a['id']] ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
