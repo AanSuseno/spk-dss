@@ -298,10 +298,10 @@ class Topsis extends BaseController
             foreach ($data_view['criteria'] as $key_c => $c) {
                 if ($key == 0) {
                     $arr_sum_weight_squared[$c['id']] = $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'] ** 2;
-                    $arr_sum_weight_squared_text[$c['id']] = '√('.$data_view['alternatives_weight'][$a['id']][$c['id']]['weight'].'^2 + ';
+                    $arr_sum_weight_squared_text[$c['id']] = '√('.$data_view['alternatives_weight'][$a['id']][$c['id']]['weight'].'² + ';
                 } else {
                     $arr_sum_weight_squared[$c['id']] += $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'] ** 2;
-                    $arr_sum_weight_squared_text[$c['id']] .= $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'].'^2 + ';
+                    $arr_sum_weight_squared_text[$c['id']] .= $data_view['alternatives_weight'][$a['id']][$c['id']]['weight'].'² + ';
                 }
             }
         endforeach;
@@ -364,23 +364,32 @@ class Topsis extends BaseController
         }
 
         $d_plus_before_root = [];
+        $d_plus_before_root_str = [];
+        $d_min_before_root_str = [];
         $d_min_before_root = [];
         foreach ($alternatives as $key => $a) :
             foreach ($criteria as $key_c => $c) :
                 if($key_c == 0) {
                     $d_plus_before_root[$a['id']] =($arr_max[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
-                    $d_min_before_root[$a['id']] =($arr_min[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
+                    $d_plus_before_root_str[$a['id']] = "√((" . number_format($arr_max[$c['id']], 2) . "-" . number_format($arr_normalized_weight[$c['id']][$key], 2) . ")²+";
+                    $d_min_before_root[$a['id']] = ($arr_min[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
+                    $d_min_before_root_str[$a['id']] = "√((" . number_format($arr_min[$c['id']], 2) . "-" . number_format($arr_normalized_weight[$c['id']][$key], 2) . ")²+";
                 } else {
                     $d_plus_before_root[$a['id']] += ($arr_max[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
-                    $d_min_before_root[$a['id']] += ($arr_min[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
+                    $d_plus_before_root_str[$a['id']] .= "(" . number_format($arr_max[$c['id']], 2) . "-" . number_format($arr_normalized_weight[$c['id']][$key], 2) . ")²+";
+                    $d_min_before_root[$a['id']] += ($arr_min[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;                    $d_min_before_root_str[$a['id']] .= "(" . number_format($arr_min[$c['id']], 2) . "-" . number_format($arr_normalized_weight[$c['id']][$key], 2) . ")²+";
                 }
             endforeach;
+            $d_min_before_root_str[$a['id']] = rtrim($d_min_before_root_str[$a['id']], '+') . ")";
+            $d_plus_before_root_str[$a['id']] = rtrim($d_plus_before_root_str[$a['id']], '+') . ")";
         endforeach;
 
         $data_view['arr_min'] = $arr_min;
         $data_view['arr_max'] = $arr_max;
         $data_view['d_plus_before_root'] = $d_plus_before_root;
         $data_view['d_min_before_root'] = $d_min_before_root;
+        $data_view['d_plus_before_root_str'] = $d_plus_before_root_str;
+        $data_view['d_min_before_root_str'] = $d_min_before_root_str;
 
         return view('dss/topsis/ideal_solutions', $data_view); 
     }

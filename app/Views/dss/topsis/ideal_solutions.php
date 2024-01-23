@@ -33,8 +33,8 @@
                                         <tr>
                                             <td><?= $key+1 ?></td>
                                             <td> <?= $a['name'] ?></td>
-                                            <td><?= number_format(sqrt($d_plus_before_root[$a['id']]), 2, '.', ',') ?></td>
-                                            <td><?= number_format(sqrt($d_min_before_root[$a['id']]), 2, '.', ',') ?></td>
+                                            <td class="tippy-me" data-tippy-content="<?= $d_plus_before_root_str[$a['id']] ?>"><?= number_format(sqrt($d_plus_before_root[$a['id']]), 2, '.', ',') ?></td>
+                                            <td class="tippy-me" data-tippy-content="<?= $d_min_before_root_str[$a['id']] ?>"><?= number_format(sqrt($d_min_before_root[$a['id']]), 2, '.', ',') ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
