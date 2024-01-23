@@ -217,6 +217,8 @@ class Topsis extends BaseController
             return $this->normalized($data_view);
         } else if ($page == 'normalized_weight') {
             return $this->normalized_weight($data_view);
+        } else if ($page == 'ideal_solutions') {
+            return $this->normalized_weight($data_view, 'ideal_solutions');
         }
     }
 
@@ -309,7 +311,7 @@ class Topsis extends BaseController
         return view('dss/topsis/normalized', $data_view);
     }
 
-    function normalized_weight($data_view) {
+    function normalized_weight($data_view, $next_function = '') {
         $arr_sum_weight_squared = [];
         foreach ($data_view['alternatives'] as $key => $a) :
             foreach ($data_view['criteria'] as $key_c => $c) {
@@ -321,13 +323,65 @@ class Topsis extends BaseController
             }
         endforeach;
         $data_view['arr_sum_weight_squared'] = $arr_sum_weight_squared;
-
+ 
         foreach ($data_view['alternatives'] as $key => $a) :
             foreach ($data_view['criteria'] as $key_c => $c) {
                 $data_view['normalized'][$a['id']][$c['id']] = $data_view['alternatives_weight'][$a['id']][$c['id']]['weight']/sqrt($arr_sum_weight_squared[$c['id']]);
             }
         endforeach;
 
+        if ($next_function == 'ideal_solutions') {
+            return $this->ideal_solutions($data_view);
+        }
+
         return view('dss/topsis/normalized_weight', $data_view);
+    }
+
+    function ideal_solutions($data_view) {
+        $arr_normalized_weight = [];
+        $alternatives = $data_view['alternatives'];
+        $alternatives_weight = $data_view['alternatives_weight'];
+        $criteria = $data_view['criteria'];
+        $total_criteria_weight = $data_view['criteria'];
+        $normalized = $data_view['normalized'];
+
+        foreach ($alternatives as $key => $a) :
+                foreach ($criteria as $key_c => $c) {
+                    $arr_normalized_weight[$c['id']][] =$c['weight']*$normalized[$a['id']][$c['id']];
+                }
+        endforeach;
+
+        $arr_max = [];
+        $arr_min = [];
+        for ($i = 0; $i < count($criteria); $i++) {
+            if ($criteria[$i]['cost_benefit'] == 'benefit') {
+                $arr_max[$criteria[$i]['id']] = max($arr_normalized_weight[$criteria[$i]['id']]);
+                $arr_min[$criteria[$i]['id']] = min($arr_normalized_weight[$criteria[$i]['id']]);
+            } else {
+                $arr_min[$criteria[$i]['id']] = max($arr_normalized_weight[$criteria[$i]['id']]);
+                $arr_max[$criteria[$i]['id']] = min($arr_normalized_weight[$criteria[$i]['id']]);
+            }
+        }
+
+        $d_plus_before_root = [];
+        $d_min_before_root = [];
+        foreach ($alternatives as $key => $a) :
+            foreach ($criteria as $key_c => $c) :
+                if($key_c == 0) {
+                    $d_plus_before_root[$a['id']] =($arr_max[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
+                    $d_min_before_root[$a['id']] =($arr_min[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
+                } else {
+                    $d_plus_before_root[$a['id']] += ($arr_max[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
+                    $d_min_before_root[$a['id']] += ($arr_min[$c['id']] - $arr_normalized_weight[$c['id']][$key])**2;
+                }
+            endforeach;
+        endforeach;
+
+        $data_view['arr_min'] = $arr_min;
+        $data_view['arr_max'] = $arr_max;
+        $data_view['d_plus_before_root'] = $d_plus_before_root;
+        $data_view['d_min_before_root'] = $d_min_before_root;
+
+        return view('dss/topsis/ideal_solutions', $data_view); 
     }
 }
