@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 23, 2024 at 04:07 PM
+-- Generation Time: Jan 28, 2024 at 04:19 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -306,6 +306,71 @@ CREATE TABLE `settings` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `smart_alternatives`
+--
+
+CREATE TABLE `smart_alternatives` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `smart_alternatives_sub_criteria`
+--
+
+CREATE TABLE `smart_alternatives_sub_criteria` (
+  `id` bigint NOT NULL,
+  `id_smart_alternatives` bigint NOT NULL,
+  `id_smart_sub_criteria` bigint NOT NULL,
+  `id_smart_criteria` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `smart_criteria`
+--
+
+CREATE TABLE `smart_criteria` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `weight` int NOT NULL,
+  `cost_benefit` enum('cost','benefit') NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `deleted_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `smart_sub_criteria`
+--
+
+CREATE TABLE `smart_sub_criteria` (
+  `id` int NOT NULL,
+  `id_projects` int NOT NULL,
+  `id_smart_criteria` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `weight` int NOT NULL,
+  `created_at` int NOT NULL,
+  `updated_at` int NOT NULL,
+  `deleted_at` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `topsis_alternatives`
 --
 
@@ -566,6 +631,30 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `smart_alternatives`
+--
+ALTER TABLE `smart_alternatives`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `smart_alternatives_sub_criteria`
+--
+ALTER TABLE `smart_alternatives_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `smart_criteria`
+--
+ALTER TABLE `smart_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `smart_sub_criteria`
+--
+ALTER TABLE `smart_sub_criteria`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `topsis_alternatives`
 --
 ALTER TABLE `topsis_alternatives`
@@ -724,6 +813,30 @@ ALTER TABLE `saw_sub_criteria`
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `smart_alternatives`
+--
+ALTER TABLE `smart_alternatives`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `smart_alternatives_sub_criteria`
+--
+ALTER TABLE `smart_alternatives_sub_criteria`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `smart_criteria`
+--
+ALTER TABLE `smart_criteria`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `smart_sub_criteria`
+--
+ALTER TABLE `smart_sub_criteria`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
