@@ -133,7 +133,7 @@
 <?= $this->section('js') ?>
 <script>
     $(document).ready(() => {
-        var bgColor = ['#DBC4F0', '#FF6969', '#F9B572', '#ddd']
+        var bgColor = ['#DBC4F0', '#FF6969', '#F9B572', '#C683D7', '#99eb96', '#ddd']
 
         // chart for projects
         new Chart($('#chartProjects').get(0).getContext('2d'), {

@@ -144,6 +144,29 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item <?= ($page_master == 'smart') ? 'menu-open' : '' ?>">
+            <a href="#" class="nav-link <?= ($page_master == 'smart') ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-balance-scale" style="color: #99eb96"></i>
+              <p>
+                SMART
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= base_url('smart') ?>" class="nav-link <?= ($page_sub == 'smart-index') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Info</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?= base_url('projects/smart') ?>" class="nav-link <?= ($page_sub == 'smart-project') ? 'active' : '' ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Projects</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

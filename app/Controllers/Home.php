@@ -72,11 +72,10 @@ class Home extends BaseController
 	}
 
 	function dashboard_user() {
-		$arr_total_sub_criteria = [
-			'ahp' => model('UsersLimit')->total_sub_criteria_1_dss('ahp'),
-			'saw' => model('UsersLimit')->total_sub_criteria_1_dss('saw'),
-			'wp' => model('UsersLimit')->total_sub_criteria_1_dss('wp'),
-		];
+		$arr_total_sub_criteria = [];
+		foreach(model('Projects')->dss() as $v) {
+			$arr_total_sub_criteria[$v['dss']] = model('UsersLimit')->total_sub_criteria_1_dss($v['dss']);
+		}
 
 		$data_view = [
             'title' => 'Dashboard User',

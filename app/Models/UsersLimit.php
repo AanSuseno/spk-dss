@@ -72,7 +72,7 @@ class UsersLimit extends Model
     function arr_total_projects($id_users = -1) {
         $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
 
-        $dss = model('Projects')->select('dss')->distinct()->find();
+        $dss = model('Projects')->dss();
         $arr_total = [];
 
         foreach ($dss as $key => $v) {
@@ -93,7 +93,7 @@ class UsersLimit extends Model
 
     function total_criteria($id_users = -1) {
         $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
-        $dss = model('Projects')->select('dss')->distinct()->find();
+        $dss = model('Projects')->dss();
         $total = 0;
 
         foreach ($dss as $key => $v) {
@@ -131,7 +131,7 @@ class UsersLimit extends Model
     function arr_total_criteria($id_users = -1) {
         $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
 
-        $dss = model('Projects')->select('dss')->distinct()->find();
+        $dss = model('Projects')->dss();
         $arr_total = [];
 
         foreach ($dss as $key => $v) {
@@ -144,7 +144,7 @@ class UsersLimit extends Model
     function total_sub_criteria($id_users = -1) {
         $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
 
-        $dss = model('Projects')->select('dss')->distinct()->find();
+        $dss = model('Projects')->dss();
         $total = 0;
 
         foreach ($dss as $key => $v) {
@@ -169,7 +169,7 @@ class UsersLimit extends Model
     function arr_total_sub_criteria($id_users = -1) {
         $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
 
-        $dss = model('Projects')->select('dss')->distinct()->find();
+        $dss = model('Projects')->dss();
         $arr_total = [];
 
         foreach ($dss as $key => $v) {
@@ -199,7 +199,7 @@ class UsersLimit extends Model
     function arr_total_alternatives($id_users = -1) {
         $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
 
-        $dss = model('Projects')->select('dss')->distinct()->find();
+        $dss = model('Projects')->dss();
         $arr_total = [];
 
         foreach ($dss as $key => $v) {
@@ -212,7 +212,7 @@ class UsersLimit extends Model
     function total_alternatives($id_users = -1) {
         $id_users = ($id_users == -1) ? session()->get('id') : $id_users;
 
-        $dss = model('Projects')->select('dss')->distinct()->find();
+        $dss = model('Projects')->dss();
         $total = 0;
 
         foreach ($dss as $key => $v) {

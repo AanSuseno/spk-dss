@@ -37,4 +37,8 @@ class Projects extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function dss() {
+        return $this->select('dss')->distinct()->find();
+    }
 }
