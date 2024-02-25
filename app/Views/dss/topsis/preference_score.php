@@ -67,7 +67,10 @@
     <?php } ?>
 
     $(document).ready(() => {
-        $('#table-result').DataTable()
+        $('#table-result').DataTable({
+            dom: 'Bfrtip',
+            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        })
     })
 </script>
 <?= $this->endSection() ?>

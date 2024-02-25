@@ -148,6 +148,9 @@ class UsersLimit extends Model
         $total = 0;
 
         foreach ($dss as $key => $v) {
+            if (in_array($v['dss'], ['smart'])) {
+				continue;
+			}
             $total += $this->total_sub_criteria_1_dss($v['dss']);
         }
 

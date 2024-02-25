@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TopsisAlternativesSubCriteria extends Model
+class SmartAlternativesSubCriteria extends Model
 {
-    protected $table            = 'topsis_alternatives_sub_criteria';
+    protected $table            = 'smart_alternatives_criteria';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';

@@ -74,6 +74,9 @@ class Home extends BaseController
 	function dashboard_user() {
 		$arr_total_sub_criteria = [];
 		foreach(model('Projects')->dss() as $v) {
+			if (in_array($v['dss'], ['smart'])) {
+				continue;
+			}
 			$arr_total_sub_criteria[$v['dss']] = model('UsersLimit')->total_sub_criteria_1_dss($v['dss']);
 		}
 

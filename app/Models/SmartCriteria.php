@@ -4,13 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TopsisAlternativesSubCriteria extends Model
+class SmartCriteria extends Model
 {
-    protected $table            = 'topsis_alternatives_sub_criteria';
+    protected $table            = 'smart_criteria';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = false;
     protected $allowedFields    = [];
 

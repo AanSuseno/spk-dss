@@ -98,15 +98,9 @@ $routes->group('/smart', ['filter' => 'loginUser'], function ($routes) {
 	$routes->get('(:num)/criteria', 'Smart::criteria/$1');
 	$routes->post('(:num)/criteria/create', 'Smart::criteria_create/$1');
 	$routes->post('(:num)/criteria/delete/(:num)', 'Smart::criteria_delete/$1/$2');
-	$routes->post('(:num)/sub_criteria/create/(:num)', 'Smart::sub_criteria_create/$1/$2');
-	$routes->get('(:num)/sub_criteria/(:num)', 'Smart::sub_criteria_json/$1/$2');
-	$routes->get('(:num)/sub_criteria/delete/(:num)', 'Smart::sub_criteria_delete/$1/$2');
-	$routes->get('(:num)/alternatives', 'Topsis::alternatives/$1');
-	$routes->post('(:num)/alternatives/create', 'Topsis::alternatives_create/$1');
-	$routes->post('(:num)/alternatives/delete/(:num)', 'Topsis::alternatives_delete/$1/$2');
-	$routes->get('(:num)/normalized', 'Topsis::alternatives/$1/normalized');
-	$routes->get('(:num)/normalized-weight', 'Topsis::alternatives/$1/normalized_weight');
-	$routes->get('(:num)/ideal_solutions', 'Topsis::alternatives/$1/ideal_solutions');
-	$routes->get('(:num)/preference_score', 'Topsis::alternatives/$1/preference_score');
+	$routes->get('(:num)/alternatives', 'Smart::alternatives/$1');
+	$routes->get('(:num)/alternatives/(:alpha)', 'Smart::alternatives/$1/$2');
+	$routes->post('(:num)/alternatives/create', 'Smart::alternatives_create/$1');
+	$routes->post('(:num)/alternatives/delete/(:num)', 'Smart::alternatives_delete/$1/$2');
 });
 
