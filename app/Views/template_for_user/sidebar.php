@@ -52,121 +52,56 @@
             </ul>
           </li>
           <li class="nav-header">DSS</li>
-          <li class="nav-item <?= ($page_master == 'ahp') ? 'menu-open' : '' ?>">
-            <a href="#" class="nav-link <?= ($page_master == 'ahp') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-balance-scale" style="color: #DBC4F0"></i>
-              <p>
-                AHP
+          <?php
+          $dataDss = [
+            [
+              'url' => 'ahp',
+              'color' => '#DBC4F0'
+            ],
+            [
+              'url' => 'saw',
+              'color' => '#FF6969'
+            ],
+            [
+              'url' => 'wp',
+              'color' => '#F9B572'
+            ],
+            [
+              'url' => 'topsis',
+              'color' => '#C683D7'
+            ],
+            [
+              'url' => 'smart',
+              'color' => '#99eb96'
+            ],
+          ];
+          $dataDss = array_reverse($dataDss);
+          ?>
+          <?php foreach ($dataDss as $key => $value) : ?>
+          <li class="nav-item <?= ($page_master == $value['url']) ? 'menu-open' : '' ?>">
+            <a href="#" class="nav-link <?= ($page_master == $value['url']) ? 'active' : '' ?>">
+              <i class="nav-icon fas fa-balance-scale" style="color: <?= $value['color'] ?>"></i>
+              <p class="text-uppercase">
+                <?= $value['url'] ?>
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<?= base_url('ahp') ?>" class="nav-link <?= ($page_sub == 'ahp-index') ? 'active' : '' ?>">
+                <a href="<?= base_url($value['url']) ?>" class="nav-link <?= ($page_sub == $value['url'] . '-index') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Info</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('projects/ahp') ?>" class="nav-link <?= ($page_sub == 'ahp-project') ? 'active' : '' ?>">
+                <a href="<?= base_url('projects/'.$value['url']) ?>" class="nav-link <?= ($page_sub == $value['url'] . '-project') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>My Projects</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item <?= ($page_master == 'saw') ? 'menu-open' : '' ?>">
-            <a href="#" class="nav-link <?= ($page_master == 'saw') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-balance-scale" style="color: #FF6969"></i>
-              <p>
-                SAW
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('saw') ?>" class="nav-link <?= ($page_sub == 'saw-index') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Info</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('projects/saw') ?>" class="nav-link <?= ($page_sub == 'saw-project') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>My Projects</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item <?= ($page_master == 'wp') ? 'menu-open' : '' ?>">
-            <a href="#" class="nav-link <?= ($page_master == 'wp') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-balance-scale" style="color: #F9B572"></i>
-              <p>
-                WP
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('wp') ?>" class="nav-link <?= ($page_sub == 'wp-index') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Info</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('projects/wp') ?>" class="nav-link <?= ($page_sub == 'wp-project') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>My Projects</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item <?= ($page_master == 'topsis') ? 'menu-open' : '' ?>">
-            <a href="#" class="nav-link <?= ($page_master == 'topsis') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-balance-scale" style="color: #C683D7"></i>
-              <p>
-                Topsis
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('topsis') ?>" class="nav-link <?= ($page_sub == 'topsis-index') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Info</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('projects/topsis') ?>" class="nav-link <?= ($page_sub == 'topsis-project') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>My Projects</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item <?= ($page_master == 'smart') ? 'menu-open' : '' ?>">
-            <a href="#" class="nav-link <?= ($page_master == 'smart') ? 'active' : '' ?>">
-              <i class="nav-icon fas fa-balance-scale" style="color: #99eb96"></i>
-              <p>
-                SMART
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('smart') ?>" class="nav-link <?= ($page_sub == 'smart-index') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Info</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('projects/smart') ?>" class="nav-link <?= ($page_sub == 'smart-project') ? 'active' : '' ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>My Projects</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+          <?php endforeach ?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
