@@ -20,7 +20,7 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="table-result">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -224,5 +224,12 @@
             }
         });
     }
+
+    $(document).ready(() => {
+        $('#table-result').DataTable({
+            dom: 'Bfrtip',
+            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        })
+    })
 </script>
 <?= $this->endSection() ?>

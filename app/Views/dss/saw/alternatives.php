@@ -20,7 +20,7 @@
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreateAlternative"><i class="fa fa-plus"></i> Add Alternative</button>
                         </div>
 
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="table-result">
                             <thead>
                                 <tr>
                                     <th rowspan="2">No</th>
@@ -67,7 +67,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="2"> </td>
+                                    <td colspan="2">Max/Min</td>
                                     <?php
                                     foreach ($criteria as $key_c => $c) {
                                         if (count($arr_min_max) === 0) {
@@ -176,5 +176,12 @@
     function deleteAlternativeModal(id) {
         $('#form-delete').attr('action', '<?= base_url("saw/$id_project/alternatives/delete") ?>/'+id)
     }
+
+    $(document).ready(() => {
+        $('#table-result').DataTable({
+            dom: 'Bfrtip',
+            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        })
+    })
 </script>
 <?= $this->endSection() ?>

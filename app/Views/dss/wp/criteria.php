@@ -20,7 +20,7 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="table-result">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -60,12 +60,14 @@
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
+                                </tbody>
+                                <tfoot>
                                     <tr>
-                                        <td colspan="3"></td>
+                                        <td colspan="3">Total</td>
                                         <th class="tippy-me" data-tippy-content="<?= rtrim($total_str, ' + '); ?>"><?= $total_criteria_weight ?></th>
                                         <td colspan="2"></td>
                                     </tr>
-                                </tbody>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -231,5 +233,12 @@
             }
         });
     }
+
+    $(document).ready(() => {
+        $('#table-result').DataTable({
+            dom: 'Bfrtip',
+            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        })
+    })
 </script>
 <?= $this->endSection() ?>

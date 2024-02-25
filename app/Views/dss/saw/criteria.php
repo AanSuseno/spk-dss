@@ -19,7 +19,7 @@
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreateCriteria"><i class="fa fa-plus"></i> Add Criteria</button>
                         </div>
 
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="table-result">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -220,5 +220,12 @@
             }
         });
     }
+
+    $(document).ready(() => {
+        $('#table-result').DataTable({
+            dom: 'Bfrtip',
+            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        })
+    })
 </script>
 <?= $this->endSection() ?>

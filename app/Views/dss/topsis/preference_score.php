@@ -12,8 +12,8 @@
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("topsis/$id_project/alternatives") ?>">Step 2 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("topsis/$id_project/normalized") ?>">Step 3 <i class="fa fa-arrow-right"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= base_url("topsis/$id_project/normalized-weight") ?>">Step 4 <i class="fa fa-arrow-right"></i></a></li>
-                <li class="nav-item"><a class="nav-link active" href="<?= base_url("topsis/$id_project/ideal_solutions") ?>">Step 5 <i class="fa fa-arrow-right"></i></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= base_url("topsis/$id_project/preference_score") ?>">Step 6</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= base_url("topsis/$id_project/ideal_solutions") ?>">Step 5 <i class="fa fa-arrow-right"></i></i></a></li>
+                <li class="nav-item"><a class="nav-link active" href="<?= base_url("topsis/$id_project/preference_score") ?>">Step 6</a></li>
             </ul>
             </div><!-- /.card-header -->
             <div class="card-body">
