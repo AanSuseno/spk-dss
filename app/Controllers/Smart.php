@@ -204,6 +204,13 @@ class Smart extends BaseController
     }
 
     function utility($id_project, $page, $criteria, $alternatives, $alternatives_weight, $project) {
+        // alternative must more than zero
+        if (count($alternatives) <= 1) {
+            session()->setFlashdata('msg', "At least have 2 alternatives.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('smart/' . $id_project . '/alternatives'));
+        }
+        
         $alternatives_min = [];
         $alternatives_max = [];
         $total_criteria_weight = 0;

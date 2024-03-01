@@ -67,7 +67,7 @@
                                         <th colspan="2">Min</th>
                                         <?php foreach ($criteria as $key_c => $c) { ?>
                                             <th>
-                                                <?= min($alternatives_weight[$c['id']]) ?>
+                                                <?= (isset($alternatives_weight[$c['id']])) ? min($alternatives_weight[$c['id']]) : 0 ?>
                                             </th>
                                         <?php } ?>
                                         <td> </td>
@@ -76,7 +76,7 @@
                                         <th colspan="2">Max</th>
                                         <?php foreach ($criteria as $key_c => $c) { ?>
                                             <th>
-                                                <?= max($alternatives_weight[$c['id']]) ?>
+                                                <?= (isset($alternatives_weight[$c['id']])) ? max($alternatives_weight[$c['id']]) : 0 ?>
                                             </th>
                                         <?php } ?>
                                         <td> </td>
