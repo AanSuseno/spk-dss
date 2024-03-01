@@ -167,6 +167,7 @@ class Topsis extends BaseController
         if(!$this->validate_project_access($id_project)) {
             return redirect()->to(base_url('/dashboard'));
         }
+        
         $project = model('Projects')->where(['id' => $id_project])->get()->getRow();
         $criteria = model('TopsisCriteria')->where(['id_projects' => $id_project])->find(); 
         $alternatives = model('TopsisAlternatives')->where(['id_projects' => $id_project])->find();
@@ -176,12 +177,17 @@ class Topsis extends BaseController
         foreach ($criteria as $key => $c) {
             $total_criteria_weight += $c['weight'];
         }
-
+        
         foreach ($criteria as $key => $c) {
             $sc[$c['id']] = model('TopsisSubCriteria')->where(['id_topsis_criteria' => $c['id']])->find();
         }
 
         foreach ($sc as $key => $sc_c) {
+            if (count($sc_c) <= 0) {
+                session()->setFlashdata('msg', "Sub criteria not valid.");
+                session()->setFlashdata('msg-type', 'warning');
+                return redirect()->to(base_url('topsis/' . $id_project . '/criteria'));
+            }
             foreach ($sc_c as $keyc => $sc_sub) {
                 $sub_criteria[$key][$sc_sub['id']] = $sc_sub;
             }
@@ -314,6 +320,8 @@ class Topsis extends BaseController
     }
 
     function normalized_weight($data_view, $next_function = '') {
+        
+        // dd($data_view);
         $arr_sum_weight_squared = [];
         foreach ($data_view['alternatives'] as $key => $a) :
             foreach ($data_view['criteria'] as $key_c => $c) {
@@ -342,6 +350,12 @@ class Topsis extends BaseController
     }
 
     function ideal_solutions($data_view, $next_function = '') {
+        if (!isset($data_view['normalized'])) {
+            session()->setFlashdata('msg', "Something missing.");
+            session()->setFlashdata('msg-type', 'warning');
+            return redirect()->to(base_url('topsis/' . $data_view['id_project'] . '/normalized'));
+        }
+
         $arr_normalized_weight = [];
         $alternatives = $data_view['alternatives'];
         $alternatives_weight = $data_view['alternatives_weight'];

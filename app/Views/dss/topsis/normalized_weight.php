@@ -74,9 +74,9 @@
                                             <th>
                                                 <?php
                                                     if ($criteria[$i]['cost_benefit'] == 'benefit') {
-                                                        echo number_format(max($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',');
+                                                        echo (isset($arr_normalized_weight[$criteria[$i]['id']])) ? number_format(max($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',') : 0;
                                                     } else {
-                                                        echo number_format(min($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',');
+                                                        echo (isset($arr_normalized_weight[$criteria[$i]['id']])) ? number_format(min($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',') : 0;
                                                     }
                                                 ?>
                                             </th>
@@ -89,9 +89,9 @@
                                             <th>
                                                 <?php
                                                     if ($criteria[$i]['cost_benefit'] == 'cost') {
-                                                        echo number_format(max($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',');
+                                                        echo (isset($arr_normalized_weight[$criteria[$i]['id']])) ? number_format(max($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',') : 0;
                                                     } else {
-                                                        echo number_format(min($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',');
+                                                        echo (isset($arr_normalized_weight[$criteria[$i]['id']])) ? number_format(min($arr_normalized_weight[$criteria[$i]['id']]), 2, '.', ',') : 0;
                                                     }
                                                 ?>
                                             </th>
