@@ -6,6 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('/login', 'Home::index');
 $routes->get('/logout', 'Home::logout');
 
 $routes->get('/dashboard', 'Home::dashboard_user', ['filter' => 'loginUser']);
