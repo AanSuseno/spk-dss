@@ -200,6 +200,11 @@ class WeightedProduct extends BaseController
         }
 
         foreach ($sc as $key => $sc_c) {
+            if (count($sc_c) <= 0) {
+                session()->setFlashdata('msg', "Sub criteria not valid.");
+                session()->setFlashdata('msg-type', 'warning');
+                return redirect()->to(base_url('wp/' . $id_project . '/criteria'));
+            }
             foreach ($sc_c as $keyc => $sc_sub) {
                 $sub_criteria[$key][$sc_sub['id']] = $sc_sub;
             }
