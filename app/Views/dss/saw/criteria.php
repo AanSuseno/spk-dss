@@ -50,7 +50,7 @@
                                              data-tippy-content="Sub Criteria of <?= $c['name'] ?>"
                                              class="btn btn-secondary btn-sm tippy-me"
                                              onclick="subCriteriaModal(<?= $c['id'] ?>, '<?= $c['name'] ?>')">
-                                                <i class="fa fa-list"></i>
+                                                <i class="fa fa-list"></i> Sub Criteria
                                             </button>
                                         </td>
                                     </tr>
