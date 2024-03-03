@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="icon" href="<?= base_url('dss-ikon.svg') ?>" type="image/x-icon">
     <title>OnDSS - Online & Simple Decision Support System</title>
     <style>
         * {
@@ -107,7 +107,7 @@
 <body class="light">
     <div class="wrapper tron">
         <div class="container text-light" style="padding-top: 100px; padding-bottom: 100px;">
-            <h1 class="text-bold"><b>OnDSS</b></h1>
+            <h1 class="text-bold"><b><img src="<?= base_url('dss-ikon.svg') ?>" style="height: 2.5rem; position: relative; bottom: .5rem" alt="">nDSS</b></h1>
             <p>Online & Simple Decision Support System</p>
             <div class="d-flex justify-content-center mt-5" style="padding-top: 20%">
                 <a href="<?= $authUri ?>" class="btn btn-primary rounded-pill shadow-light">
