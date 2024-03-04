@@ -21,7 +21,7 @@
             </li>
         </ul>
     </p>
-    <div class="alert alert-light border-info text-dark">
+    <div class="alert alert-light border-info text-dark overflow-auto">
         I am learning from <a href="https://www.youtube.com/watch?v=tLPZI63S2-o" target="_blank" class="text-dark">here</a> and <a href="https://www.youtube.com/watch?v=po_aDO6OEkE" target="_blank" class="text-dark">here</a>.
         <p>
             Here for more article:
@@ -40,4 +40,7 @@
     <p>
         <a href="<?= base_url('projects/smart') ?>" class="btn btn-primary btn-sm text-uppercase col-12"><i class="fa fa-plus"></i> create project</a>
     </p>
+    <div class="d-flex justify-content-center">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/6Xi2KpqoPvc?si=vP_Tx0WI6igNRIqF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
 <?= $this->endSection() ?>
